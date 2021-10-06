@@ -404,7 +404,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Token"
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "$ref": "#/components/schemas/Token"
+                    },
+                    "userId": {
+                      "$ref": "#/components/schemas/UserId"
+                    }
+                  }
                 }
               }
             }
@@ -446,7 +454,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Token"
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "$ref": "#/components/schemas/Token"
+                    },
+                    "userId": {
+                      "$ref": "#/components/schemas/UserId"
+                    }
+                  }
                 }
               }
             }

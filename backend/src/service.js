@@ -110,7 +110,10 @@ export const login = (email, password) => userLock((resolve, reject) => {
   const userId = getUserIdFromEmail(email);
   if (userId !== undefined && users[userId].password === password) {
     users[userId].sessionActive = true;
-    resolve(jwt.sign({ userId, }, JWT_SECRET, { algorithm: 'HS256', }));
+    resolve({
+      token: jwt.sign({ userId, }, JWT_SECRET, { algorithm: 'HS256', }),
+      userId: parseInt(userId, 10),
+    });
   }
   reject(new InputError('Invalid email or password'));
 });
@@ -133,8 +136,10 @@ export const register = (email, password, name) => userLock((resolve, reject) =>
     image: null,
     sessionActive: true,
   };
-  const token = jwt.sign({ userId, }, JWT_SECRET, { algorithm: 'HS256', });
-  resolve(token);
+  resolve({
+    token: jwt.sign({ userId, }, JWT_SECRET, { algorithm: 'HS256', }),
+    userId: parseInt(userId, 10),
+  });
 });
 
 /***************************************************************

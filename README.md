@@ -11,8 +11,10 @@
 
 ## 0. Change Log
 
-Coming Soon
-  
+* 30/09: Fixed config file imports
+* 05/10: `/auth/register` and `/auth/login` now return userId
+* 06/10: Added requirement for user to be able to join/leave a channel
+
 ## 1. Background & Motivation
 
 Web-based applications are becoming the most common way to build a digital capability accessible to a mass audience. While there are modern tools that help us build these rapidly, it's important to understand the fundamental JavaScript-based technology and architectures that exist, both to gain a deeper understanding for when these skills may be needed, but also to simply understand the mechanics of fundamental JS. Even when working with a high level framework like ReactJS, understanding (in-concept) the code that it is transpiled to will ensure you're a more well rounded web-based engineer.
@@ -78,6 +80,8 @@ Milestone 2 focuses on creating **channels**, and viewing the basic channel scre
  * When viewing a single channel screen, certain information should be accessible/visible within 0-1 clicks.
  * This information includes the name of the channel, description, public/private setting, creation timestamp (as a time/date not as an ISO string, flexible to whatever you think is user-friendly), and name of the creator of the channel.
  * Users should be able to edit the channel's name and description in some way.
+ * If the user is not a member of the channel, they do not need to see the channel details, but should be given a way to join the channel.
+ * If the user is a member of the channel, there should be an option to leave the channel.
 
 ### 2.3. Milestone 3 - Channel messages (18%)
 
@@ -229,7 +233,7 @@ Your backend is persistent in terms of data storage. That means the data will re
 
 Once the backend has started, you can view the API documentation by navigating to `http://localhost:[port]` in a web browser.
 
-The port that the backend runs on (and that the frontend can use) is specified in `frontend/src/config.json`. You can change the port in this file. This file exists so that your frontend knows what port to use when talking to the backend.
+The port that the backend runs on (and that the frontend can use) is specified in `frontend/src/config.js`. You can change the port in this file. This file exists so that your frontend knows what port to use when talking to the backend.
 
 ## 4. Constraints & Assumptions
 
