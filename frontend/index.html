@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
-
+<!-- COLOUR SCHEME FOR APP -->
+<!-- Primary: #f6cd59 nice yellow -->
+<!-- Secondary: #ea7f49 nice orange tone -->
+<!-- Secondary complement: #6bdada teal -->
+<!-- Other colours: #c38d9d purple, #40b3a2, darker green -->
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,14 +17,30 @@
 
 <body>
   <!-- This is an example app structure, you can modify this as much as you choose -->
-  <header class="banner">
-    <h1>Slackr</h1>
+  <header class="nav">
+    <h1>Slackr.</h1>
+    <div class="nav-item">HOME</div>
+    <div class="nav-item">SIGN OUT</div>
   </header>
   <main role="main">
     <!-- app goes here -->
+    <!-- login screen -->
+    <div class="page" id="login_page">
+      <form name="login"  id="login_form">
+          <h1>Slackr &trade;</h1>
+          <label class="input_field">Email</label>
+          <input type="text" name="email" oninput="checkName(loginIn)" placeholder="Enter your Email...">
+          <br />
+          <label class="input_field">Password</label>
+          <input type="password" name="password" oninput="checkPass(loginIn)" placeholder="Enter your Password...">
+          <br /> 
+          <button name="submit" value="login" class="btn" onclick="submitLoginButton()">LOGIN</button>
+          <button name="sign_up" value="sign-up" class="btn" onclick="submitSignUpButton()">SIGN UP</button>              
+      </form>
+    </div>
   </main>
-  <footer>
-    <p>&copy; Slackr</p>
+  <footer class="footer">
+    <p>&copy; Christian Ilagan z5311202</p>
   </footer>
   <script type="module" src="src/main.js"></script>
 </body>
