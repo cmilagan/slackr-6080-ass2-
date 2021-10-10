@@ -8,10 +8,26 @@
       "image": null,
       "sessionActive": true
     },
+    "50369": {
+      "email": "cmilagan7@gmail.com",
+      "name": "cmila",
+      "password": "adada",
+      "bio": null,
+      "image": null,
+      "sessionActive": true
+    },
     "56422": {
       "email": "sebastian@email.com",
       "name": "Sebastian",
       "password": "chickenonastick",
+      "bio": null,
+      "image": null,
+      "sessionActive": true
+    },
+    "69175": {
+      "email": "newme",
+      "name": "cmila",
+      "password": "hello",
       "bio": null,
       "image": null,
       "sessionActive": true

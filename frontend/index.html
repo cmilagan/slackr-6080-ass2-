@@ -17,7 +17,18 @@
 
 <body>
   <!-- This is an example app structure, you can modify this as much as you choose -->
-  <header class="nav">
+
+  <!-- Error popup modals -->
+  <div id="error_pop_up" class="popup">
+    <div class="popup_content">
+      <span id="close">&times;</span>
+      <p id="error_msg"></p>
+    </div>
+  </div>
+
+  <!-- Main application navbars -->
+
+  <header class="nav" id="navbar">
     <h1>Slackr.</h1>
     <div class="nav-item">HOME</div>
     <div class="nav-item">SIGN OUT</div>
@@ -29,17 +40,38 @@
       <form name="login"  id="login_form">
           <h1>Slackr &trade;</h1>
           <label class="input_field">Email</label>
-          <input type="text" name="email" oninput="checkName(loginIn)" placeholder="Enter your Email...">
+          <input type="text" id="email" placeholder="Enter your Email...">
           <br />
           <label class="input_field">Password</label>
-          <input type="password" name="password" oninput="checkPass(loginIn)" placeholder="Enter your Password...">
+          <input type="password" id="password" placeholder="Enter your Password...">
           <br /> 
-          <button name="submit" value="login" class="btn" onclick="submitLoginButton()">LOGIN</button>
-          <button name="sign_up" value="sign-up" class="btn" onclick="submitSignUpButton()">SIGN UP</button>              
+          <input type="button" id="login_submit" class="btn" value="login">
+          <input type="button" id="sign_up" class="btn" value="sign up">            
+      </form>
+    </div>
+
+    <!-- register screen -->
+    <div class="page" id="register_page">
+      <form name="register"  id="register_form">
+          <h1>Slackr &trade;</h1>
+          <label class="input_field">Email</label>
+          <input type="text" id="register_email" placeholder="Enter your Email...">
+          <br />
+          <label class="input_field">Username</label>
+          <input type="text" id="create_username" placeholder="Create your username...">
+          <br />
+          <label class="input_field">Password</label>
+          <input type="password" id="create_password" placeholder="Create your Password...">
+          <br /> 
+          <label class="input_field">Confirm</label>
+          <input type="password" id="confirm_password" placeholder="Confirm your Password...">
+          <br /> 
+          <input type="button" id="submit" class="btn" value="submit">
+          <input type="button" id="back" class="btn" value="back">            
       </form>
     </div>
   </main>
-  <footer class="footer">
+  <footer id="footer">
     <p>&copy; Christian Ilagan z5311202</p>
   </footer>
   <script type="module" src="src/main.js"></script>

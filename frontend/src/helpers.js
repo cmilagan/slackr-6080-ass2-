@@ -29,3 +29,21 @@ export function fileToDataUrl(file) {
     reader.readAsDataURL(file);
     return dataUrlPromise;
 }
+
+/**
+ * display appropiate error msg in popup
+ */
+export function errorPopUp(err) {
+    const message = document.getElementById("error_msg");
+    message.innerText = err;
+    document.getElementById("error_pop_up").style.display = "block";
+}
+
+/* Unloads all elements in the html file */
+export function unload() {
+    document.getElementById("error_pop_up").style.display = "none";
+    document.getElementById("navbar").style.display = "none";
+    document.getElementById("footer").style.display = "none";
+    document.getElementById("register_page").style.display ="none";
+    document.getElementById("login_page").style.display ="none";
+}

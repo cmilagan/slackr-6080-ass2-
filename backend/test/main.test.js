@@ -81,7 +81,7 @@ const privateChannelId = async () => {
   return channels[0].private ? channels[0].id : channels[1].id;
 };
 
-const userId = async (user) => {
+const getUserId = async (user) => {
   const { users, } = await getTry('/user', 200, {}, await validToken(USER1));
   return users.find(u => u.email === user.email).id;
 }
@@ -97,12 +97,13 @@ describe('Auth tests', () => {
   });
 
   test('Registration of initial user', async () => {
-    const { token, } = await postTry('/auth/register', 200, {
+    const { token, userId, } = await postTry('/auth/register', 200, {
       email: USER1.email,
       password: USER1.password,
       name: USER1.name,
     });
     expect(token instanceof String);
+    expect(userId).toBe(await getUserId(USER1));
   });
 
   test('Inability to re-register a user', async () => {
@@ -123,11 +124,12 @@ describe('Auth tests', () => {
   });
 
   test('Login to an existing user', async () => {
-    const { token, } = await postTry('/auth/login', 200, {
+    const { token, userId, } = await postTry('/auth/login', 200, {
       email: USER1.email,
       password: USER1.password,
     });
     expect(token instanceof String);
+    expect(userId).toBe(await getUserId(USER1));
   });
 
   test('Login attempt with invalid credentials 1', async () => {
@@ -412,7 +414,7 @@ describe('Channel tests', () => {
   test('Invalid user can\'t invite user to public channel', async () => {
     const channelId = await publicChannelId();
     await postTry(`/channel/${channelId}/invite`, 403, {
-      userId: await userId(USER3),
+      userId: await getUserId(USER3),
     }, INVALID_TOKEN);
   });
 
@@ -425,28 +427,28 @@ describe('Channel tests', () => {
 
   test('User can\'t invite other user to invalid channel', async () => {
     await postTry('/channel/999999999/invite', 400, {
-      userId: await userId(USER2),
+      userId: await getUserId(USER2),
     }, await validToken(USER1));
   });
 
   test('Non-member can\'t invite user to public channel', async () => {
     const channelId = await publicChannelId();
     await postTry(`/channel/${channelId}/invite`, 403, {
-      userId: await userId(USER3),
+      userId: await getUserId(USER3),
     }, await validToken(USER2));
   });
 
   test('Non-member can\'t invite self to public channel', async () => {
     const channelId = await publicChannelId();
     await postTry(`/channel/${channelId}/invite`, 403, {
-      userId: await userId(USER3),
+      userId: await getUserId(USER3),
     }, await validToken(USER3));
   });
 
   test('Creator can invite second user to public channel', async () => {
     const channelId = await publicChannelId();
     await postTry(`/channel/${channelId}/invite`, 200, {
-      userId: await userId(USER2),
+      userId: await getUserId(USER2),
     }, await validToken(USER1));
     const channel = await getTry(`/channel/${channelId}`, 200, {}, await validToken(USER2));
     expect(channel.members).toHaveLength(2);
@@ -455,14 +457,14 @@ describe('Channel tests', () => {
   test('Can\'t invite user who is already a member', async () => {
     const channelId = await publicChannelId();
     await postTry(`/channel/${channelId}/invite`, 400, {
-      userId: await userId(USER2),
+      userId: await getUserId(USER2),
     }, await validToken(USER1));
   });
 
   test('Second user (member) can invite third user to public channel', async () => {
     const channelId = await publicChannelId();
     await postTry(`/channel/${channelId}/invite`, 200, {
-      userId: await userId(USER3),
+      userId: await getUserId(USER3),
     }, await validToken(USER2));
     const channel = await getTry(`/channel/${channelId}`, 200, {}, await validToken(USER3));
     expect(channel.members).toHaveLength(3);
@@ -471,7 +473,7 @@ describe('Channel tests', () => {
   test('Creator can invite second user to private channel', async () => {
     const channelId = await privateChannelId();
     await postTry(`/channel/${channelId}/invite`, 200, {
-      userId: await userId(USER2),
+      userId: await getUserId(USER2),
     }, await validToken(USER1));
     const channel = await getTry(`/channel/${channelId}`, 200, {}, await validToken(USER2));
     expect(channel.members).toHaveLength(2);
@@ -512,25 +514,25 @@ describe('User tests', () => {
   });
 
   test('First user can view own profile', async () => {
-    const profile = await getTry(`/user/${await userId(USER1)}`, 200, {}, await validToken(USER1));
+    const profile = await getTry(`/user/${await getUserId(USER1)}`, 200, {}, await validToken(USER1));
     expect(profile.name).toBe(USER1.name);
     expect(profile.bio).toBe(null);
   });
 
   test('First user can view second user\'s profile', async () => {
-    const profile = await getTry(`/user/${await userId(USER2)}`, 200, {}, await validToken(USER1));
+    const profile = await getTry(`/user/${await getUserId(USER2)}`, 200, {}, await validToken(USER1));
     expect(profile.name).toBe(USER2.name);
     expect(profile.bio).toBe(null);
   });
 
   test('Second user can view first user\'s profile', async () => {
-    const profile = await getTry(`/user/${await userId(USER1)}`, 200, {}, await validToken(USER2));
+    const profile = await getTry(`/user/${await getUserId(USER1)}`, 200, {}, await validToken(USER2));
     expect(profile.name).toBe(USER1.name);
     expect(profile.bio).toBe(null);
   });
 
   test('Invalid token can\'t view other user\'s profiles', async () => {
-    await getTry(`/user/${await userId(USER1)}`, 403, {}, INVALID_TOKEN);
+    await getTry(`/user/${await getUserId(USER1)}`, 403, {}, INVALID_TOKEN);
   });
 
   test('Can\'t view invalid user\'s profiles', async () => {
@@ -545,7 +547,7 @@ describe('User tests', () => {
   });
 
   test('Updates applied', async () => {
-    const profile = await getTry(`/user/${await userId(USER1)}`, 200, {}, await validToken(USER1));
+    const profile = await getTry(`/user/${await getUserId(USER1)}`, 200, {}, await validToken(USER1));
     expect(profile.name).toBe(USER1.name);
     expect(profile.bio).toBe(USER1.bio);
     expect(profile.image).toBe(IMAGE);
@@ -577,7 +579,7 @@ describe('User tests', () => {
   });
 
   test('Updates applied', async () => {
-    const profile = await getTry(`/user/${await userId(USER3)}`, 200, {}, await validToken(USER1));
+    const profile = await getTry(`/user/${await getUserId(USER3)}`, 200, {}, await validToken(USER1));
     expect(profile.name).toBe(USER3.name);
     expect(profile.bio).toBe(USER3.bio);
   });
@@ -597,7 +599,7 @@ describe('User tests', () => {
       name: USER3.name,
       bio: USER3.bio,
     }, await validToken(USER2));
-    const profile = await getTry(`/user/${await userId(USER2)}`, 200, {}, await validToken(USER1));
+    const profile = await getTry(`/user/${await getUserId(USER2)}`, 200, {}, await validToken(USER1));
     expect(profile.email).toBe(USER2.email);
     expect(profile.name).toBe(USER3.name);
     expect(profile.bio).toBe(USER3.bio);
@@ -737,7 +739,7 @@ describe('Message tests', () => {
     expect(typeof messages[0].id).toBe('number');
     expect(messages[0].message).toBe('message1');
     expect(messages[0].image).toBe(undefined);
-    expect(messages[0].sender).toBe(await userId(USER1));
+    expect(messages[0].sender).toBe(await getUserId(USER1));
     expect(typeof messages[0].sentAt).toBe('string');
     expect(messages[0].edited).toBe(false);
     expect(messages[0].editedAt).toBe(null);
@@ -788,7 +790,7 @@ describe('Message tests', () => {
     expect(typeof messages[0].id).toBe('number');
     expect(messages[0].message).toBe(undefined);
     expect(messages[0].image).toBe(IMAGE);
-    expect(messages[0].sender).toBe(await userId(USER1));
+    expect(messages[0].sender).toBe(await getUserId(USER1));
     expect(typeof messages[0].sentAt).toBe('string');
     expect(messages[0].edited).toBe(false);
     expect(messages[0].editedAt).toBe(null);

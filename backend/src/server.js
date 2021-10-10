@@ -4,6 +4,7 @@ import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 
 import { InputError, AccessError, } from './error';
+import { BACKEND_PORT } from '../../frontend/src/config';
 import swaggerDocument from '../swagger.json';
 import {
   save,
@@ -66,14 +67,12 @@ const authed = fn => async (req, res) => {
 
 app.post('/auth/login', catchErrors(async (req, res) => {
   const { email, password, } = req.body;
-  const token = await login(email, password);
-  return res.json({ token, });
+  return res.json(await login(email, password));
 }));
 
 app.post('/auth/register', catchErrors(async (req, res) => {
   const { email, password, name, } = req.body;
-  const token = await register(email, password, name);
-  return res.json({ token, });
+  return res.json(await register(email, password, name));
 }));
 
 app.post('/auth/logout', catchErrors(authed(async (req, res, authUserId) => {
@@ -225,8 +224,7 @@ app.get('/', (req, res) => res.redirect('/docs'));
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-const configData = JSON.parse(fs.readFileSync('../frontend/src/config.json'));
-const port = 'BACKEND_PORT' in configData ? configData.BACKEND_PORT : 5000;
+const port = BACKEND_PORT || 5000;
 
 const server = app.listen(port, () => {
   console.log(`Backend is now listening on port ${port}!`);
