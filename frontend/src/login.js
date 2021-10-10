@@ -23,9 +23,15 @@ export function login() {
 
     fetch('http://localhost:5005/auth/login', requestOptions).then((response) => {
         if (response.ok) {
-            errorPopUp("Successful login");
+            response.json().then((data) => {
+                localStorage.setItem('token', data['token']);
+                console.log(data['token']);
+                loggedIn();
+            })
         } else {
-            errorPopUp("Invalid login attempt");
+            response.json().then((data) => {
+                errorPopUp(data["error"]);
+            });
         }
     });
 }
@@ -52,12 +58,60 @@ export function register() {
         headers: { 'Content-Type': 'application/json' },
         body: jsonString,
     };
+
     fetch('http://localhost:5005/auth/register', requestOptions).then((response) => {
         if (response.ok) {
-            errorPopUp("Successful registration");
-            // handles registered emails
+            response.json().then((data) => {
+                localStorage.setItem('token', data['token']);
+                console.log(data['token']);
+                loggedIn();
+            })           
         } else {
-            errorPopUp("Invalid register attempt, Email is already in use.");
+            response.json().then((data) => {
+                errorPopUp(data["error"]);
+            });
         }
     });
+}
+
+export function signout() {
+    const token = localStorage.getItem('token');
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        },
+
+    };
+
+    console.log(token);
+    fetch('http://localhost:5005/auth/logout', requestOptions).then(response => {
+        if (response.ok) {
+            notLoggedIn();
+        } else {
+            response.json().then((data) => {
+                errorPopUp(data["error"]);
+            });
+        }
+    });
+}
+
+/**
+ * If the user is not logged in, display login/register pages
+ */
+export function notLoggedIn() {
+    unload();
+    document.getElementById("login_page").style.display ="flex";
+    console.log("user is not logged in, displaying login page");
+}
+/**
+ * If the user is logged in, display the main application page
+ */
+export function loggedIn() {
+    unload();
+    document.getElementById("navbar").style.display = "flex";
+    document.getElementById("footer").style.display = "flex";
+    console.log(localStorage.getItem('token'));
 }

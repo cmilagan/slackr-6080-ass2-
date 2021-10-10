@@ -9,19 +9,10 @@ import {
 import {
     login,
     register,
+    signout,
+    loggedIn,
+    notLoggedIn,
 } from './login.js';
-
-console.log('Let\'s go!');
-
-/**
- * If the user is not logged in, display login/register pages
- */
-function notLoggedIn() {
-    unload();
-    document.getElementById("login_page").style.display ="flex";
-    console.log("user is not logged in, displaying login page");
-}
-
 
 
 /**
@@ -33,13 +24,10 @@ function checkUserLogin() {
         console.log("checked in here");
         notLoggedIn();
     } else {
-        // loggedIn();
+        console.log("user is already logged in");
+        loggedIn();
     }
 }
-
-console.log("hello");
-checkUserLogin();
-notLoggedIn();
 
 /* EVENT LISTENERS */
 
@@ -71,8 +59,6 @@ document.getElementById('sign_up').addEventListener('click', () => {
     // display register
     unload();
     document.getElementById("register_page").style.display = "flex";
-
-
 });
 
 /**
@@ -95,12 +81,22 @@ document.getElementById('submit').addEventListener('click', () => {
 /**
  * User registers when pressing enter on the confirm password field
  */
- document.getElementById('confirm_password').addEventListener('keydown', (e) => {
+document.getElementById('confirm_password').addEventListener('keydown', (e) => {
     if(e.code === "Enter") {
         // run register
         register();
     }
 });
+
+/**
+ * Event handler for user signing out
+ */
+document.getElementById('signout_button').addEventListener('click', () => {
+    signout();
+});
+
+
+
 
 /**
  * User closes any pop ups by pressing the x button
@@ -109,3 +105,5 @@ document.getElementById('close').addEventListener('click', () => {
     // close popup
     document.getElementById("error_pop_up").style.display = "none";
 });
+
+checkUserLogin();

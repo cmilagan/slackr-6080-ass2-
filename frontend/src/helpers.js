@@ -46,4 +46,6 @@ export function unload() {
     document.getElementById("footer").style.display = "none";
     document.getElementById("register_page").style.display ="none";
     document.getElementById("login_page").style.display ="none";
+    document.getElementById("error_pop_up").style.display ="none";
+    document.getElementById("application_page").style.display ="none";
 }
