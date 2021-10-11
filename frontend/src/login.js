@@ -113,6 +113,6 @@ export function notLoggedIn() {
 export function loggedIn() {
     unload();
     document.getElementById("navbar").style.display = "flex";
-    document.getElementById("footer").style.display = "flex";
+    document.getElementById("application_page").style.display = "grid";
     console.log(localStorage.getItem('token'));
 }

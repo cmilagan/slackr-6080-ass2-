@@ -22,7 +22,7 @@
       "password": "",
       "bio": null,
       "image": null,
-      "sessionActive": false
+      "sessionActive": true
     },
     "75881": {
       "email": "cmilagan7@gmail.com",

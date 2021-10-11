@@ -37,7 +37,7 @@
     <!-- app goes here -->
     <!-- login screen -->
     <div class="page" id="login_page">
-      <form name="login"  id="login_form">
+      <form class="login"  id="login_form">
           <h1>Slackr &trade;</h1>
           <label class="input_field">Email</label>
           <input type="text" id="email" placeholder="Enter your Email...">
@@ -52,7 +52,7 @@
 
     <!-- register screen -->
     <div class="page" id="register_page">
-      <form name="register"  id="register_form">
+      <form class="register"  id="register_form">
           <h1>Slackr &trade;</h1>
           <label class="input_field">Email</label>
           <input type="text" id="register_email" placeholder="Enter your Email...">
@@ -74,7 +74,38 @@
     <!-- Main application page: showcases all channels and navigations -->
 
     <div class="page" id="application_page">
+      <!-- Bonus feature: Search bar for filtering channels in channel list -->
+      <div class="search_filter">
+        <input type="text" id="channel_search" placeholder="Search for channels...">
+      </div>
+      <!-- List of all the users channels -->
+      <div class="channel_list">
+        List of channels
+      </div>
+      <!-- Name/Description display of currently selected channel -->
+      <div class="channel_details">
+        <div class="channel_name">
+          <h4>Change this to be channel name</h4>
+          <small>This is the channel description</small>
+        </div>
+        <div class="channel_buttons">
+          <img src="../assets/pin.png" alt="">
+        </div>
+      </div>
+      <!-- Content of channel screen -->
+      <div class="channel_content">
+        All the channels messages displayed here
+      </div>
+      <!-- Send message field for channels -->
+      <div class="message_field">
+        <input type="text" id="msg_input" placeholder="Send a message...">
+        <input type="button" id="msg_send" class="btn" value="send">
+      </div>
 
+      <!-- Buttons for user to create new channel/modify channel list -->
+      <div class="user_options">
+        <input type="button" id="create_channel" class="btn" value="+">
+      </div>
     </div>
   </main>
   <footer id="footer">
