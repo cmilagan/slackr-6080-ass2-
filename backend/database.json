@@ -6,7 +6,7 @@
       "password": "chickenonastick",
       "bio": null,
       "image": null,
-      "sessionActive": true
+      "sessionActive": false
     },
     "39340": {
       "email": "mia@email.com",
@@ -15,6 +15,22 @@
       "bio": null,
       "image": null,
       "sessionActive": true
+    },
+    "60275": {
+      "email": "",
+      "name": "",
+      "password": "",
+      "bio": null,
+      "image": null,
+      "sessionActive": false
+    },
+    "75881": {
+      "email": "cmilagan7@gmail.com",
+      "name": "cmilagan",
+      "password": "12345",
+      "bio": null,
+      "image": null,
+      "sessionActive": false
     }
   },
   "channels": {
