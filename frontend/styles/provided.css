@@ -28,12 +28,10 @@ html, body {
 }
 
 .nav-bar {
-    list-style-type: none;
     padding: 0;
 }
 
 .nav-item {
-    list-style-type: none;
     padding: 20px 5px;
     transition: 0.5s;
 }
@@ -57,13 +55,9 @@ html, body {
 
 #login_form, #register_form {
     background-color: #f6cd59;
-    width: 100%;
-    text-align: center;
-}
-
-#login_form, #register_form {
-    margin: auto;
     width: 25%;
+    text-align: center;
+    margin: auto;
     border-radius: 3px;
     padding: 10px 20px 20px 20px;
 }
@@ -72,7 +66,7 @@ label {
     padding-bottom: 2%;
 }
 
-.login input[type="text"], .login input[type="password"], .register input[type="text"], .register input[type="password"] {
+.login input[type="text"], .login input[type="password"], .register input[type="text"], .register input[type="password"], #channel_form input[type="text"] {
     border: none;
     border-bottom: 1px solid black;
     background: transparent;
@@ -84,7 +78,7 @@ input[type="text"]:focus, input[type="password"]:focus {
     background: white;
 }
 
-.login .btn, .register .btn{
+.login .btn, .register .btn, #channel_form .btn {
     width: 70%;
     height: 30px;
     margin: 1rem;
@@ -105,9 +99,10 @@ input[type="text"]:focus, input[type="password"]:focus {
     display: none;
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    padding-top: 40vh; /* Location of the box */
     left: 0;
     top: 0;
+    align-items: center;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
@@ -127,14 +122,14 @@ input[type="text"]:focus, input[type="password"]:focus {
 }
 
 /* The Close Button */
-#close {
+#close_form, #close_error {
     color: #000000;
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
 
-#close:hover {
+#close_form:hover, #close_error:hover {
     cursor: pointer;
     color: #aaaaaa;
 }
@@ -144,7 +139,7 @@ input[type="text"]:focus, input[type="password"]:focus {
     background-color: #ea7f49;
 }
 
-.channel_list {
+#channel_list {
     grid-area: list;
     background-color: antiquewhite;
 }
@@ -243,3 +238,48 @@ input[type="text"]:focus, input[type="password"]:focus {
 .channel_buttons img {
     height: 30px;
 }
+
+.popup#new_channel .popup_content{
+    background-color: #ea7f49;
+    text-align: center;
+}
+
+
+#channel_form {
+    margin: auto;
+    width: 75%;
+    border-radius: 3px;
+    align-items: center;
+    justify-content: center;
+}
+
+#channel_form h1 {
+    color: #fefefe;
+}
+
+#channel_list {
+    display: flex;
+    padding-top: 10%;
+    justify-content: center;
+}
+
+
+#channel_list * {
+    background-color: #40b3a2;
+    height: 5%;
+    width: 90%;
+    color: white;
+    font-weight: 600;
+    padding: 6px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    border-bottom: 0.5px solid black;
+}
+
+#channel_list *:hover {
+    cursor: pointer;
+}
+
+
+

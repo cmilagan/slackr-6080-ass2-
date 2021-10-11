@@ -5,6 +5,10 @@ import {
     unload,
 } from './helpers.js';
 
+import {
+    getChannels,
+} from './channel.js';
+
 // User Login/Authentication
 
 export function login() {
@@ -115,4 +119,5 @@ export function loggedIn() {
     document.getElementById("navbar").style.display = "flex";
     document.getElementById("application_page").style.display = "grid";
     console.log(localStorage.getItem('token'));
+    getChannels();
 }

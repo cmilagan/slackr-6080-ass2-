@@ -14,6 +14,9 @@ import {
     notLoggedIn,
 } from './login.js';
 
+import {
+    channelform,
+} from './channel.js';
 
 /**
  * Check that a user has been logged in.
@@ -95,15 +98,23 @@ document.getElementById('signout_button').addEventListener('click', () => {
     signout();
 });
 
+document.getElementById('create_channel').addEventListener('click', ()=> {
+    channelform();
+});
 
 
 
 /**
- * User closes any pop ups by pressing the x button
+ * User closes any error pop ups by pressing the x button
  */
-document.getElementById('close').addEventListener('click', () => {
+document.getElementById('close_error').addEventListener('click', () => {
     // close popup
     document.getElementById("error_pop_up").style.display = "none";
 });
+
+document.getElementById('close_form').addEventListener('click', () => {
+    document.getElementById("new_channel").style.display = "none";
+});
+
 
 checkUserLogin();

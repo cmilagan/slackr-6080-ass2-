@@ -21,8 +21,30 @@
   <!-- Error popup modals -->
   <div id="error_pop_up" class="popup">
     <div class="popup_content">
-      <span id="close">&times;</span>
+      <span id="close_error">&times;</span>
       <p id="error_msg"></p>
+    </div>
+  </div>
+
+  <!-- New channel popup -->
+  <div id="new_channel" class="popup">
+    <div class="popup_content">
+      <span id="close_form">&times;</span>
+      <form id="channel_form">
+        <h1>Create a new Channel</h1>
+        <label class="input_field">Channel Name</label>
+        <br />
+        <input type="text" id="new_channel_name" placeholder="Enter a channel name...">
+        <br />
+        <label class="input_field">Description (optional)</label>
+        <br />
+        <input type="text" id="new_channel_desc" placeholder="Enter a channel description...">
+        <br /> 
+        <label class="input_field">Private</label>
+        <input type="checkbox" id="make_private">
+        <br />
+        <input type="button" id="create_channel_submit" class="btn" value="submit">
+    </form>
     </div>
   </div>
 
@@ -79,9 +101,7 @@
         <input type="text" id="channel_search" placeholder="Search for channels...">
       </div>
       <!-- List of all the users channels -->
-      <div class="channel_list">
-        List of channels
-      </div>
+      <div id="channel_list"></div>
       <!-- Name/Description display of currently selected channel -->
       <div class="channel_details">
         <div class="channel_name">
