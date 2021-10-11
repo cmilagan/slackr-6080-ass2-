@@ -69,16 +69,14 @@ html, body {
 }
 
 label {
-    padding-bottom: 10px;
-    width: 25%;
-    display: inline-block;
+    padding-bottom: 2%;
 }
 
 input[type="text"], input[type="password"] {
     border: none;
     border-bottom: 1px solid black;
     background: transparent;
-    width: 80%;
+    width: 90%;
     margin-bottom: 5%;
 }
 
@@ -101,7 +99,7 @@ input[type="text"]:focus, input[type="password"]:focus {
     opacity: 0.5;
 }
 
-/* Popup skeleton: https://www.w3schools.com/howto/howto_css_modals.asp */
+/* Popup: https://www.w3schools.com/howto/howto_css_modals.asp */
 
 .popup {
     display: none;

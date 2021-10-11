@@ -89,6 +89,7 @@ export function signout() {
     console.log(token);
     fetch('http://localhost:5005/auth/logout', requestOptions).then(response => {
         if (response.ok) {
+            localStorage.removeItem('token');
             notLoggedIn();
         } else {
             response.json().then((data) => {
