@@ -15,7 +15,7 @@ import {
 } from './login.js';
 
 import {
-    channelform,
+    createNewChannel,
 } from './channel.js';
 
 /**
@@ -98,11 +98,15 @@ document.getElementById('signout_button').addEventListener('click', () => {
     signout();
 });
 
+// EVENT HANDLERS FOR CREATING CHANNELS
+
 document.getElementById('create_channel').addEventListener('click', ()=> {
-    channelform();
+    document.getElementById("new_channel").style.display = "block";
 });
 
-
+document.getElementById('create_channel_submit').addEventListener('click', () => {
+    createNewChannel();
+});
 
 /**
  * User closes any error pop ups by pressing the x button
@@ -114,6 +118,10 @@ document.getElementById('close_error').addEventListener('click', () => {
 
 document.getElementById('close_form').addEventListener('click', () => {
     document.getElementById("new_channel").style.display = "none";
+});
+
+document.getElementById('close_edit').addEventListener('click', () => {
+    document.getElementById("edit_channel").style.display = "none";
 });
 
 

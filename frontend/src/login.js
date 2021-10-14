@@ -97,6 +97,8 @@ export function signout() {
             notLoggedIn();
         } else {
             response.json().then((data) => {
+                localStorage.removeItem('token');
+                notLoggedIn();
                 errorPopUp(data["error"]);
             });
         }

@@ -122,14 +122,14 @@ input[type="text"]:focus, input[type="password"]:focus {
 }
 
 /* The Close Button */
-#close_form, #close_error {
+.close {
     color: #000000;
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
 
-#close_form:hover, #close_error:hover {
+.close:hover {
     cursor: pointer;
     color: #aaaaaa;
 }
@@ -144,7 +144,7 @@ input[type="text"]:focus, input[type="password"]:focus {
     background-color: antiquewhite;
 }
 
-.channel_details {
+.channel_nav {
     grid-area: details;
     background-color: antiquewhite;
 }
@@ -217,18 +217,20 @@ input[type="text"]:focus, input[type="password"]:focus {
     border-radius: 20px;
 }
 
-.channel_details {
+.channel_nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.channel_name, .channel_desc {
+#channel_details {
     margin-left: 15px;
+    /* display: none; */
 }
 
-.channel_name h4 {
+#channel_details h4 {
     margin: 0;
+    line-height: 20px;
 }
 
 .channel_buttons img {
@@ -257,29 +259,68 @@ input[type="text"]:focus, input[type="password"]:focus {
     color: #fefefe;
 }
 
+/* Scroll bar for channel list: https://blog.hubspot.com/website/hide-scrollbar-css */
+
 #channel_list {
-    display: flex;
-    padding-top: 10%;
-    justify-content: center;
+    display: block;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll; 
 }
 
+/* chrome safari firefox */
+#channel_list::-webkit-scrollbar {
+    display: none;
+}
 
-#channel_list * {
+#channel_list div {
+    margin: 0 auto;
+    margin-top: 5%;
     background-color: #40b3a2;
     height: 5%;
-    width: 90%;
+    width: 80%;
     color: white;
     font-weight: 600;
-    padding: 6px;
+    padding: 8px;
     border-radius: 4px;
     display: flex;
     align-items: center;
-    border-bottom: 0.5px solid black;
+    justify-content: space-between;
 }
 
 #channel_list *:hover {
     cursor: pointer;
 }
 
+.fas:hover {
+    opacity: 0.1;
+}
 
+#channel_buttons {
+    width: 20%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#channel_buttons .btn {
+    width: 30%;
+    padding: 2% 4%;
+    border: none;
+    border-radius: 3px;
+}
+
+#join_channel {
+    background-color: #ea7f49;
+}
+
+#leave_channel {
+    background-color: #40b3a2;
+}
+
+#invite_channel {
+    background-color: #fefefe;
+}
+#error_pop_up {
+    z-index: 99999;
+}
 

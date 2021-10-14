@@ -12,6 +12,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- You can add your styles and scripts here -->
   <link rel="stylesheet" type="text/css" media="screen" href="styles/provided.css" />
+
+  <!-- font awesome icons -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
   <script type="module" src="src/helpers.js"></script>
 </head>
 
@@ -21,7 +24,7 @@
   <!-- Error popup modals -->
   <div id="error_pop_up" class="popup">
     <div class="popup_content">
-      <span id="close_error">&times;</span>
+      <span id="close_error" class="close">&times;</span>
       <p id="error_msg"></p>
     </div>
   </div>
@@ -29,7 +32,7 @@
   <!-- New channel popup -->
   <div id="new_channel" class="popup">
     <div class="popup_content">
-      <span id="close_form">&times;</span>
+      <span id="close_form" class="close">&times;</span>
       <form id="channel_form">
         <h1>Create a new Channel</h1>
         <label class="input_field">Channel Name</label>
@@ -48,6 +51,16 @@
     </div>
   </div>
 
+  <!-- Edit channel popup -->
+  <div id="edit_channel" class="popup">
+    <div class="popup_content">
+      <span id="close_edit" class="close">&times;</span>
+      <form id="edit_channel_form">
+        
+      </form>
+    </div>
+  </div>
+
   <!-- Main application navbars -->
 
   <header class="nav" id="navbar">
@@ -62,9 +75,11 @@
       <form class="login"  id="login_form">
           <h1>Slackr &trade;</h1>
           <label class="input_field">Email</label>
+          <br />
           <input type="text" id="email" placeholder="Enter your Email...">
           <br />
           <label class="input_field">Password</label>
+          <br />
           <input type="password" id="password" placeholder="Enter your Password...">
           <br /> 
           <input type="button" id="login_submit" class="btn" value="login">
@@ -77,15 +92,19 @@
       <form class="register"  id="register_form">
           <h1>Slackr &trade;</h1>
           <label class="input_field">Email</label>
+          <br />
           <input type="text" id="register_email" placeholder="Enter your Email...">
           <br />
           <label class="input_field">Username</label>
+          <br />
           <input type="text" id="create_username" placeholder="Create your username...">
           <br />
           <label class="input_field">Password</label>
+          <br />
           <input type="password" id="create_password" placeholder="Create your Password...">
           <br /> 
           <label class="input_field">Confirm</label>
+          <br />
           <input type="password" id="confirm_password" placeholder="Confirm your Password...">
           <br /> 
           <input type="button" id="submit" class="btn" value="submit">
@@ -103,13 +122,19 @@
       <!-- List of all the users channels -->
       <div id="channel_list"></div>
       <!-- Name/Description display of currently selected channel -->
-      <div class="channel_details">
-        <div class="channel_name">
-          <h4>Change this to be channel name</h4>
-          <small>This is the channel description</small>
+      <div class="channel_nav">
+        <div id="channel_details">
+          <h4 id="heading_display">Change this to be channel name</h4>
+          <br>
+          <small id="description_display">This is the channel description</small>
+          <br>
+          <small id="attribute_display">Created by: blah, on:</small>
         </div>
-        <div class="channel_buttons">
-          <img src="../assets/pin.png" alt="">
+        <div id="channel_buttons">
+          <input type="button" id="invite_channel" class="btn" value="invite">
+          <input type="button" id="join_channel" class="btn" value="join">
+          <input type="button" id="leave_channel" class="btn" value="leave">
+          <i class="fas fa-thumbtack" style="font-size: 30px;"></i>
         </div>
       </div>
       <!-- Content of channel screen -->
