@@ -14,6 +14,7 @@
 * 30/09: Fixed config file imports
 * 05/10: `/auth/register` and `/auth/login` now return userId
 * 06/10: Added requirement for user to be able to join/leave a channel
+* 15/10: Fixed schema for messages in swagger documentation
 
 ## 1. Background & Motivation
 
