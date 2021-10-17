@@ -149,7 +149,16 @@ input[type="text"]:focus, input[type="password"]:focus {
     background-color: antiquewhite;
 }
 
-.channel_content {
+.container {
+    display: block;
+    align-items: center;
+    justify-content: center;
+}
+
+#channel_content {
+    max-height: 75vh;
+    display: flex;
+    flex-direction: column-reverse;
     grid-area: channel_content;
 }
 
@@ -175,7 +184,7 @@ input[type="text"]:focus, input[type="password"]:focus {
     ;
 }
 
-.channel_list, .search_filter, .channel_content, .message_field, .user_options {
+.search_filter, .message_field, .user_options {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -228,7 +237,7 @@ input[type="text"]:focus, input[type="password"]:focus {
     /* display: none; */
 }
 
-#channel_details h4 {
+h4 {
     margin: 0;
     line-height: 20px;
 }
@@ -261,18 +270,22 @@ input[type="text"]:focus, input[type="password"]:focus {
 
 /* Scroll bar for channel list: https://blog.hubspot.com/website/hide-scrollbar-css */
 
-#channel_list {
+#channel_list, #channel_content {
     display: block;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
     overflow-y: scroll; 
 }
 
+
 /* chrome safari firefox */
-#channel_list::-webkit-scrollbar {
+#channel_list::-webkit-scrollbar,  #channel_content::-webkit-scrollbar {
     display: none;
 }
 
+
+
+/* Individual channel styling */
 #channel_list div {
     margin: 0 auto;
     margin-top: 5%;
@@ -288,12 +301,24 @@ input[type="text"]:focus, input[type="password"]:focus {
     justify-content: space-between;
 }
 
+#edit_channel .popup_content {
+    justify-content: center;
+}
+
+#edit_channel_form {
+    width: 25%;
+    display: block;
+    align-items: center;
+
+}
+
 #channel_list *:hover {
     cursor: pointer;
 }
 
 .fas:hover {
     opacity: 0.1;
+    cursor: pointer;
 }
 
 #channel_buttons {
@@ -322,5 +347,46 @@ input[type="text"]:focus, input[type="password"]:focus {
 }
 #error_pop_up {
     z-index: 99999;
+}
+
+.loading {
+	opacity: 0;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	transition: opacity .3s ease-in;
+}
+
+.loading.show {
+	opacity: 1;
+
+}
+
+.ball {
+	background-color: #c38d9d;
+	border-radius: 50%;
+	margin: 5px;
+    margin-top: 15px;
+	height: 5px;
+	width: 10px;
+	animation: jump 0.5s ease-in infinite;
+}
+
+.ball:nth-of-type(2) {
+	animation-delay: 0.1s;
+}
+
+.ball:nth-of-type(3) {
+	animation-delay: 0.2s;
+}
+
+@keyframes jump {
+	0%, 100% {
+		transform: translateY(0);
+	}
+	
+	50% {
+		transform: translateY(-10px);
+	}
 }
 

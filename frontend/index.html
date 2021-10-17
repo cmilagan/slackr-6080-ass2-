@@ -21,6 +21,9 @@
 <body>
   <!-- This is an example app structure, you can modify this as much as you choose -->
 
+  <!-- Default profile picture for users -->
+  <input type="file" id="default_profile_picture">
+
   <!-- Error popup modals -->
   <div id="error_pop_up" class="popup">
     <div class="popup_content">
@@ -129,6 +132,7 @@
           <small id="description_display">This is the channel description</small>
           <br>
           <small id="attribute_display">Created by: blah, on:</small>
+          <input type="text" style="display: none" id="display_id">
         </div>
         <div id="channel_buttons">
           <input type="button" id="invite_channel" class="btn" value="invite">
@@ -138,12 +142,19 @@
         </div>
       </div>
       <!-- Content of channel screen -->
-      <div class="channel_content">
-        All the channels messages displayed here
+      <div class="container">
+        <div class="loading">
+          <div class="ball"></div>
+          <div class="ball"></div>
+          <div class="ball"></div>
+        </div>
+        <div id="channel_content">
+
+        </div>
       </div>
       <!-- Send message field for channels -->
       <div class="message_field">
-        <input type="text" id="msg_input" placeholder="Send a message...">
+        <textarea name=type_message" id="msg_input" cols="1" rows="1"></textarea>
         <input type="button" id="msg_send" class="btn" value="send">
       </div>
 

@@ -2,7 +2,15 @@ import {
     fileToDataUrl,
     errorPopUp,
     unload,
+    calculateTimeDate,
 } from './helpers.js';
+import { 
+    displayChannelMessages,
+} from './messages.js';
+
+import {
+    getUserDetails,
+} from './user.js';
 
 /**
  * Displays the popup to the user
@@ -44,7 +52,7 @@ export function createNewChannel() {
 }
 
 /**
- * updates the channel details on the page
+ * display the channel details on the page channel navigation bar
  * @param {*} id 
  */
 const displayChannelDetails = (id) => {
@@ -55,23 +63,45 @@ const displayChannelDetails = (id) => {
         headers: { 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token,
-            'channelId': id,
         },
+        path : {
+            'channelId': id,
+        }
     }
+
+    let date_time;
+
+    /**
+     * Call back funtion for getting the users details 
+     */
+    let user_name;
+    const success = (data) => {
+        user_name = data["name"];
+        document.getElementById("attribute_display").innerText = "Created by: " +  user_name + " on: " + date_time;
+    }
+
     fetch('http://localhost:5005/channel/' + id, requestOptions).then(response => {
         if (response.ok) {
             console.log("Details obtained");
             response.json().then(data => {
                 document.getElementById("heading_display").innerText = data["name"];
-                document.getElementById("description_display").innerText = "Description: " + data["description"];
+                let channel_type = "Public, "
+                if (data["private"]) {
+                    channel_type = "Private, "
+                }
+                document.getElementById("display_id").value = id;
+                document.getElementById("description_display").innerText = "Description: " + channel_type + data["description"];
                 document.getElementById("attribute_display").style.display = "block";
                 document.getElementById("join_channel").style.display = "none";
                 document.getElementById("invite_channel").style.display = "block";
                 document.getElementById("leave_channel").style.display = "block";
-                document.getElementById("attribute_display").innerText = "todo";
+                getUserDetails(data["creator"], success);
+                date_time = calculateTimeDate(data["createdAt"]);
+                
             });
         } else {
             response.json().then(data => {
+                console.log(data["error"]);
                 errorPopUp(data["error"]);
             });
             document.getElementById("heading_display").innerText = "You are not a member of this channel";
@@ -112,6 +142,8 @@ const editChannelDetails = (id) => {
         headers: { 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token,
+        },
+        path : {
             'channelId': id,
         },
         body: jsonString,
@@ -120,6 +152,7 @@ const editChannelDetails = (id) => {
         if (response.ok) {
             console.log("Succesfully changed channel details");
             getChannels();
+            displayChannelDetails(id);
         } else {
             response.json().then((data) => {
                 console.log("i got here");
@@ -186,6 +219,7 @@ const createEditForm = (id) => {
  */
 export function getChannels() {
     // hard reset channel list 
+    
     const channel_list = document.getElementById("channel_list");
     channel_list.innerHTML = '';
 
@@ -199,7 +233,6 @@ export function getChannels() {
         },
 
     };
-
     console.log(token);
     fetch('http://localhost:5005/channel', requestOptions).then(response => {
         if (response.ok) {
@@ -223,10 +256,13 @@ export function getChannels() {
                     current.appendChild(name);
                     current.appendChild(edit_channel);
                     channel_list.appendChild(current);
-                    
+
+
                     document.getElementById("channel_" + i["id"]).addEventListener('click', () => {
                         console.log("displaying clicked channel " + i["id"]);
                         displayChannelDetails(i["id"]);
+                        document.getElementById("channel_content").innerHTML = "";
+                        displayChannelMessages(i["id"], 0);
                     })
 
                     document.getElementById("edit_channel_" + i["id"]).addEventListener('click', () => {

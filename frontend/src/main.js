@@ -18,6 +18,10 @@ import {
     createNewChannel,
 } from './channel.js';
 
+import {
+    displayChannelMessages,
+} from './messages.js';
+
 /**
  * Check that a user has been logged in.
  */
@@ -122,6 +126,28 @@ document.getElementById('close_form').addEventListener('click', () => {
 
 document.getElementById('close_edit').addEventListener('click', () => {
     document.getElementById("edit_channel").style.display = "none";
+});
+
+
+let element;
+const loading = document.querySelector('.loading');
+let numChildren;
+let id;
+
+// Infinite scroll
+document.getElementById("channel_content").addEventListener('scroll', () => {
+    element = document.getElementById("channel_content");
+    if (element.scrollHeight + element.scrollTop === element.clientHeight) {
+        // errorPopUp("hello this is when i reach the top");
+        numChildren = element.childElementCount;
+        id = document.getElementById("display_id").value;
+
+        console.log(numChildren);
+        console.log(loading);
+
+        loading.classList.add('show');
+        displayChannelMessages(id, numChildren);
+    } 
 });
 
 

@@ -36,6 +36,7 @@ export function fileToDataUrl(file) {
 export function errorPopUp(err) {
     const message = document.getElementById("error_msg");
     message.innerText = err;
+    console.log(err);
     document.getElementById("error_pop_up").style.display = "block";
 }
 
@@ -48,4 +49,25 @@ export function unload() {
     document.getElementById("login_page").style.display ="none";
     document.getElementById("error_pop_up").style.display ="none";
     document.getElementById("application_page").style.display ="none";
+    document.getElementById("default_profile_picture").style.display ="none";
+}
+
+export const calculateTimeDate = (isoString) => {
+    // console.log(isoString);
+    // https://www.codegrepper.com/code-examples/javascript/javascript+get+current+time+in+iso+format
+    const time = new Date(isoString).toLocaleTimeString('en',
+                { timeStyle: 'short', hour12: false, timeZone: 'UTC' });
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    if (day < 10) {
+        day = '0' + day;
+    }
+    if (month < 10) {
+        month = '0' + month;
+    }
+
+    return day +'/' + month + '/'+ year + ' at ' + time;
 }
