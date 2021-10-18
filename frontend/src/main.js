@@ -129,24 +129,19 @@ document.getElementById('close_edit').addEventListener('click', () => {
 });
 
 
-let element;
-const loading = document.querySelector('.loading');
+const element = document.getElementById("channel_content");;
+const loading = document.getElementById('loading');
 let numChildren;
 let id;
 
 // Infinite scroll
 document.getElementById("channel_content").addEventListener('scroll', () => {
-    element = document.getElementById("channel_content");
-    if (element.scrollHeight + element.scrollTop === element.clientHeight) {
+    if (element.scrollHeight + element.scrollTop <= element.clientHeight + 1) {
         // errorPopUp("hello this is when i reach the top");
         numChildren = element.childElementCount;
         id = document.getElementById("display_id").value;
-
-        console.log(numChildren);
-        console.log(loading);
-
-        loading.classList.add('show');
-        displayChannelMessages(id, numChildren);
+        loading.style.display = "flex";
+        setTimeout(function() { displayChannelMessages(id, numChildren); }, 1000);
     } 
 });
 

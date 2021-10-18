@@ -92,7 +92,13 @@ export const displayChannelMessages = (id, flag) => {
     // get user name & profile photo from getUserDetails
 
     fetch(url, requestOptions).then(response => {
-        return response.json();
+        if (response.ok) {
+            return response.json();
+        } else {
+            response.json.then((data) => {
+                errorPopUp(data["error"]);
+            });
+        }
     }).then(data => {
         return data["messages"];
     }).then(messages => {
@@ -122,6 +128,10 @@ export const displayChannelMessages = (id, flag) => {
         });
         return Promise.all(promise_list);
     }).then(msg_senders => {
+        // if (message_list.length === 0) {
+        //     console.log("hello");
+        // }
+
         if (msg_senders.length !== message_list.length) {
             errorPopUp("Error loading messages");
         }
@@ -133,8 +143,8 @@ export const displayChannelMessages = (id, flag) => {
 
     }).then(() => {
         // errorPopUp("hi");
-        const loading = document.querySelector('.loading');
-        loading.classList.remove('show');
+        const loading = document.getElementById("loading");
+        loading.style.display = "none";
     }).catch(err => {
         errorPopUp(err);
     });

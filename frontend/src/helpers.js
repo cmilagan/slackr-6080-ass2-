@@ -50,6 +50,7 @@ export function unload() {
     document.getElementById("error_pop_up").style.display ="none";
     document.getElementById("application_page").style.display ="none";
     document.getElementById("default_profile_picture").style.display ="none";
+    document.getElementById("loading").style.display = "none";
 }
 
 export const calculateTimeDate = (isoString) => {

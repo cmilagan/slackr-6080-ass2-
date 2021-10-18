@@ -262,7 +262,10 @@ export function getChannels() {
                         console.log("displaying clicked channel " + i["id"]);
                         displayChannelDetails(i["id"]);
                         document.getElementById("channel_content").innerHTML = "";
-                        displayChannelMessages(i["id"], 0);
+                        const loading = document.getElementById('loading');
+                        loading.style.display = "flex";
+                        console.log(loading);
+                        setTimeout(function() { displayChannelMessages(i["id"], 0); } , 1000);
                     })
 
                     document.getElementById("edit_channel_" + i["id"]).addEventListener('click', () => {
