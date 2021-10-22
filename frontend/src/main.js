@@ -132,6 +132,10 @@ document.getElementById('close_edit_message').addEventListener('click', () => {
     document.getElementById("edit_message").style.display = "none";
 });
 
+document.getElementById('close_react_message').addEventListener('click', () => {
+    document.getElementById("react_message").style.display = "none";
+});
+
 
 const element = document.getElementById("channel_content");;
 const loading = document.getElementById('loading');

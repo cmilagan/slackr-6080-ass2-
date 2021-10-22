@@ -317,9 +317,9 @@ const editMessage = (channel_id, message_id, message, image) => {
             document.getElementById(`message_text_${message_id}`).innerText = message;
             if (image !== undefined) {
                 if (document.getElementById(`message_image_${message_id}`) === null) {
-                    const message_content = document.getElementById(`message_content_${message.id}`);
+                    const message_content = document.getElementById(`message_content_${message_id}`);
                     const img = document.createElement("img");
-                    img.setAttribute("id", `message_image_${message.id}`);
+                    img.setAttribute("id", `message_image_${message_id}`);
                     img.style.height = "auto";
                     img.style.width = "20%";
                     img.src = image;
@@ -378,15 +378,20 @@ const editMessageRequest = (channel_id, message_id) => {
 }
 
 const createEditMessageForm = (channel_id, message_id) => {
-    console.log("creating new edit");
     const form = document.getElementById("edit_message_form");
     clearChildren(form);
+    const form_container = document.createElement("div");
+    form_container.style.display = "block";
+    form_container.style.width = "90%";
+    form_container.style.margin = "0 auto";
+    form_container.style.textAlign = "center";
     const form_heading = document.createElement("h1");
     form_heading.innerText = "Edit message";
 
     const input_field_1 = document.createElement("label");
     input_field_1.setAttribute("class", "input_field");
     input_field_1.innerText = "Edit text";
+
 
     const input_field_2 = document.createElement("label");
     input_field_2.setAttribute("class", "input_field");
@@ -407,15 +412,22 @@ const createEditMessageForm = (channel_id, message_id) => {
     submit.setAttribute("class", "btn");
     submit.setAttribute("value", "submit");
 
-    form.appendChild(form_heading);
-    form.appendChild(input_field_1);
-    form.appendChild(edit_text);
-    form.appendChild(document.createElement("br"));
-    form.appendChild(input_field_2);
-    form.appendChild(edit_image);
-    form.appendChild(document.createElement("br"));
-    form.appendChild(submit);
 
+    const upload_div = document.createElement("div");
+    upload_div.appendChild(input_field_2);
+    upload_div.appendChild(edit_image);
+
+    form_container.appendChild(form_heading);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(input_field_1);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(edit_text);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(upload_div);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(submit);
+
+    form.appendChild(form_container);
     document.getElementById("edit_message_submit_" + message_id).addEventListener("click", () => {
         console.log(`editing message ${message_id} in ${channel_id}`);
         editMessageRequest(channel_id, message_id);
@@ -424,6 +436,51 @@ const createEditMessageForm = (channel_id, message_id) => {
 }
 
 
+const createReactForm = (channel_id, message_id) => {
+    const form = document.getElementById("react_message_form");
+    clearChildren(form);
+    const form_container = document.createElement("div");
+    form_container.style.display = "block";
+    form_container.style.width = "90%";
+    form_container.style.margin = "0 auto";
+    form_container.style.textAlign = "center";
+
+    const reaction_options = document.createElement("div");
+    reaction_options.style.display = "flex";
+    reaction_options.style.justifyContent = "space-between";
+
+    const form_heading = document.createElement("h1");
+    form_heading.innerText = "React to message";
+
+    const thank_react = document.createElement("input");
+    thank_react.type = "button";
+    thank_react.id = `thank_${message_id}`;
+    thank_react.className = "btn";
+    thank_react.value = '🙏';
+
+    const laugh_react = document.createElement("input");
+    laugh_react.type = "button";
+    laugh_react.id = `laugh_${message_id}`;
+    laugh_react.className = "btn";
+    laugh_react.value = '😂';
+
+    const heart_react = document.createElement("input");
+    heart_react.type = "button";
+    heart_react.id = `heart_${message_id}`;
+    heart_react.className = "btn";
+    heart_react.value = '💗';
+
+    reaction_options.appendChild(thank_react);
+    reaction_options.appendChild(laugh_react);
+    reaction_options.appendChild(heart_react);
+
+    form_container.appendChild(form_heading);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(reaction_options);
+
+    form.appendChild(form_container);
+}
+
 // Event handlers for message modifications
 const messageOptionHandlers = (channel_id, message_id) => {
     document.getElementById(`remove_msg_${message_id}`).addEventListener('click', () => {
@@ -431,13 +488,13 @@ const messageOptionHandlers = (channel_id, message_id) => {
     });
 
     document.getElementById(`edit_msg_${message_id}`).addEventListener('click', () => {
-        console.log("hello");
         createEditMessageForm(channel_id, message_id);
         document.getElementById("edit_message").style.display= "block";
     });
 
     document.getElementById(`react_msg_${message_id}`).addEventListener('click', () => {
-        
+        createReactForm(channel_id, message_id);
+        document.getElementById("react_message").style.display = "block";
     });
 
     document.getElementById(`pin_msg_${message_id}`).addEventListener('click', () => {

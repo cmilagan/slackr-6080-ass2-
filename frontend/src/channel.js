@@ -173,6 +173,13 @@ const createEditForm = (id) => {
     // let form = document.getElementById("edit_channel_form_" + id);
     const form = document.getElementById("edit_channel_form");
     clearChildren(form);
+
+    const form_container = document.createElement("div");
+    form_container.style.display = "block";
+    form_container.style.width = "90%";
+    form_container.style.margin = "0 auto";
+    form_container.style.textAlign = "center";
+
     const form_heading = document.createElement("h1");
     form_heading.innerText = "Edit channel details";
 
@@ -201,12 +208,19 @@ const createEditForm = (id) => {
     submit.setAttribute("class", "btn");
     submit.setAttribute("value", "submit");
 
-    form.appendChild(form_heading);
-    form.appendChild(input_field_1);
-    form.appendChild(edit_channel_name);
-    form.appendChild(input_field_2);
-    form.appendChild(edit_channel_desc);
-    form.appendChild(submit);
+    form_container.appendChild(form_heading);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(input_field_1);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(edit_channel_name);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(input_field_2);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(edit_channel_desc);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(submit);
+
+    form.appendChild(form_container);
 
     document.getElementById("edit_channel_submit_" + id).addEventListener("click", () => {
         console.log(id);

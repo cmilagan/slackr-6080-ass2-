@@ -314,16 +314,6 @@ h4 {
     justify-content: space-between;
 }
 
-#edit_channel .popup_content {
-    justify-content: center;
-}
-
-#edit_channel_form {
-    width: 25%;
-    display: block;
-    align-items: center;
-
-}
 
 #channel_list *:hover {
     cursor: pointer;
@@ -332,6 +322,18 @@ h4 {
 .fas:hover {
     opacity: 0.1;
     cursor: pointer;
+}
+
+#edit_channel input[type="text"], #edit_message input[type="text"], #edit_message input[type="file"] {
+    border: none;
+    border-bottom: 1px solid black;
+    background: transparent;
+    width: 60%;
+    margin-bottom: 5%;
+}
+
+#edit_message input[type="file"] {
+    border-bottom: none;
 }
 
 #channel_buttons {
@@ -344,6 +346,13 @@ h4 {
     width: 30%;
     padding: 2% 4%;
     border: none;
+    border-radius: 3px;
+}
+
+#react_message_form .btn {
+    background: transparent;
+    width: 20%;
+    font-size: 100%;
     border-radius: 3px;
 }
 
@@ -400,11 +409,6 @@ h4 {
 
 
 
-#image_icon {
-    
-}
-
-
 @media screen and (max-width: 756px) {
     #login_form, #register_form {
         width: 50%;
@@ -434,6 +438,14 @@ h4 {
         ;
     }
     
+
+    #react_message_form .btn {
+        background: transparent;
+        text-align: center;
+        font-size: 16px;
+        border: none;
+    }
+
     .search_filter {
         display: none;
     }
