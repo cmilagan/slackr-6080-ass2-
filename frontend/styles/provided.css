@@ -144,7 +144,7 @@ input[type="text"]:focus, input[type="password"]:focus {
     background-color: antiquewhite;
 }
 
-.channel_nav {
+#channel_nav {
     grid-area: details;
     background-color: antiquewhite;
 }
@@ -155,36 +155,41 @@ input[type="text"]:focus, input[type="password"]:focus {
     justify-content: center;
 }
 
-#channel_content {
-    max-height: 75vh;
-    display: flex;
-    flex-direction: column-reverse;
-    grid-area: channel_content;
+.container {
+    grid-area: content_container;
 }
 
-.message_field {
+#channel_content {
+    max-height: 76vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column-reverse;
+}
+
+#message_field {
     grid-area: msg_field;
     background-color: #ea7f49;
 }
 
-.user_options {
+#user_options {
     grid-area: user_options;
     background-color: #ea7f49;
 }
 
 #application_page {
     padding-top: 80px;
+    max-height: calc(100vh - 80px);
     grid-template-columns: 2fr 10fr;
     grid-template-rows: 1fr 10fr 1fr;
     gap: 1px;
     grid-template-areas: 
         "search details"
-        "list channel_content"
+        "list content_container"
         "user_options msg_field"
     ;
 }
 
-.search_filter, .message_field, .user_options {
+.search_filter, #message_field, #user_options {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -204,6 +209,7 @@ input[type="text"]:focus, input[type="password"]:focus {
 
 #msg_input {
     padding: 0.5%;
+    height: 20%;
 }
 
 #create_channel {
@@ -226,7 +232,14 @@ input[type="text"]:focus, input[type="password"]:focus {
     border-radius: 20px;
 }
 
-.channel_nav {
+#image_icon {
+    padding: 0.5%;
+    margin: 2%;
+    background-color: #f6cd59;
+    border-radius: 50%;
+}
+
+#channel_nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -385,3 +398,70 @@ h4 {
 	}
 }
 
+
+
+#image_icon {
+    
+}
+
+
+@media screen and (max-width: 756px) {
+    #login_form, #register_form {
+        width: 50%;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+    .nav-item {
+        font-size: 14px;
+    }
+    
+    #brand:hover {
+        cursor: pointer;
+    }
+
+    #application_page {
+        padding-top: 80px;
+        max-height: calc(100vh - 80px);
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 10fr 1fr;
+        gap: 1px;
+        grid-template-areas: 
+            "details"
+            "content_container"
+            "msg_field"
+        ;
+    }
+    
+    .search_filter {
+        display: none;
+    }
+
+    #channel_list {
+        display: none;
+    }
+
+    #user_options {
+        display: none;
+    }
+
+    #channel_buttons {
+        margin-right: 14%;
+    }
+
+    #channel_buttons * {
+        margin: 5px;
+    }
+
+    #channel_buttons .btn {
+        width: 60%;
+    }
+
+    #channel_details {
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+
+}

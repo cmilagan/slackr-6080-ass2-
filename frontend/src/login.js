@@ -11,6 +11,9 @@ import {
 
 // User Login/Authentication
 
+/**
+ * Logs in the user by their email and password
+ */
 export function login() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -40,6 +43,10 @@ export function login() {
     });
 }
 
+/**
+ * Registers the user by the details filled out in registration the form
+ * 
+ */
 export function register() {
     const email = document.getElementById('register_email').value;
     const name = document.getElementById('create_username').value;
@@ -78,6 +85,9 @@ export function register() {
     });
 }
 
+/**
+ * Logs out the current user by their token (stored in localStorage)
+ */
 export function signout() {
     const token = localStorage.getItem('token');
 

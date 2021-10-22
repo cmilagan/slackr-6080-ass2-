@@ -21,8 +21,6 @@
 <body>
   <!-- This is an example app structure, you can modify this as much as you choose -->
 
-  <!-- Default profile picture for users -->
-  <input type="file" id="default_profile_picture">
 
   <!-- Error popup modals -->
   <div id="error_pop_up" class="popup">
@@ -57,8 +55,19 @@
   <!-- Edit channel popup -->
   <div id="edit_channel" class="popup">
     <div class="popup_content">
-      <span id="close_edit" class="close">&times;</span>
+      <span id="close_edit_channel" class="close">&times;</span>
       <form id="edit_channel_form">
+        
+      </form>
+    </div>
+  </div>
+
+
+  <!-- Edit message popup -->
+  <div id="edit_message" class="popup">
+    <div class="popup_content">
+      <span id="close_edit_message" class="close">&times;</span>
+      <form id="edit_message_form">
         
       </form>
     </div>
@@ -67,8 +76,8 @@
   <!-- Main application navbars -->
 
   <header class="nav" id="navbar">
-    <h1>Slackr.</h1>
-    <div class="nav-item" id="home_button">HOME</div>
+    <h1 id="brand">Slackr.</h1>
+    <div class="nav-item" id="home_button">PROFILE</div>
     <div class="nav-item" id="signout_button">SIGN OUT</div>
   </header>
   <main role="main">
@@ -119,13 +128,13 @@
 
     <div class="page" id="application_page">
       <!-- Bonus feature: Search bar for filtering channels in channel list -->
-      <div class="search_filter">
+      <div class="search_filter" id="filter">
         <input type="text" id="channel_search" placeholder="Search for channels...">
       </div>
       <!-- List of all the users channels -->
       <div id="channel_list"></div>
       <!-- Name/Description display of currently selected channel -->
-      <div class="channel_nav">
+      <div id="channel_nav">
         <div id="channel_details">
           <h4 id="heading_display">Change this to be channel name</h4>
           <br>
@@ -142,7 +151,7 @@
         </div>
       </div>
       <!-- Content of channel screen -->
-      <div class="container">
+      <div class="container" id="message_container">
         <div id="loading">
           <div class="ball"></div>
           <div class="ball"></div>
@@ -153,13 +162,15 @@
         </div>
       </div>
       <!-- Send message field for channels -->
-      <div class="message_field">
-        <textarea name=type_message" id="msg_input" cols="1" rows="1"></textarea>
+      <div id="message_field">
+        <input type="file" id="image_upload" hidden>
+        <label for="image_upload" id="image_icon"><i class="fas fa-image" style="font-size: 24px"></i></label>
+        <input type="text" id="msg_input" autocomplete="off">
         <input type="button" id="msg_send" class="btn" value="send">
       </div>
 
       <!-- Buttons for user to create new channel/modify channel list -->
-      <div class="user_options">
+      <div id="user_options">
         <input type="button" id="create_channel" class="btn" value="+">
       </div>
     </div>

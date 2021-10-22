@@ -19,7 +19,7 @@ import {
 } from './channel.js';
 
 import {
-    displayChannelMessages,
+    displayChannelMessages, renderMessage,
 } from './messages.js';
 
 /**
@@ -124,8 +124,12 @@ document.getElementById('close_form').addEventListener('click', () => {
     document.getElementById("new_channel").style.display = "none";
 });
 
-document.getElementById('close_edit').addEventListener('click', () => {
+document.getElementById('close_edit_channel').addEventListener('click', () => {
     document.getElementById("edit_channel").style.display = "none";
+});
+
+document.getElementById('close_edit_message').addEventListener('click', () => {
+    document.getElementById("edit_message").style.display = "none";
 });
 
 
@@ -136,14 +140,58 @@ let id;
 
 // Infinite scroll
 document.getElementById("channel_content").addEventListener('scroll', () => {
-    if (element.scrollHeight + element.scrollTop <= element.clientHeight + 1) {
+    if (element.scrollHeight + element.scrollTop <= element.clientHeight + 1 && element.childElementCount !== 0) {
         // errorPopUp("hello this is when i reach the top");
         numChildren = element.childElementCount;
+        console.log(numChildren);
         id = document.getElementById("display_id").value;
         loading.style.display = "flex";
         setTimeout(function() { displayChannelMessages(id, numChildren); }, 1000);
     } 
 });
 
+
+// mobile layout
+document.getElementById("brand").addEventListener('click', () => {
+    if (window.screen.width <= 756) {
+        const search_filter = document.getElementById("filter");
+        const channel_list = document.getElementById("channel_list");
+        const add_channel = document.getElementById("user_options");
+        
+
+        const details = document.getElementById("channel_nav");
+        const buttons = document.getElementById("channel_buttons");
+        const container = document.getElementById("message_container");
+        const msg_field = document.getElementById("message_field");
+
+        document.getElementById("application_page").style.gridTemplateAreas = '"search" "list" "user_options"'
+
+        console.log(document.getElementById("application_page").style.gridTemplateAreas);
+
+        search_filter.style.display = "flex";
+        channel_list.style.display = "block";
+        add_channel.style.display = "flex";
+        details.style.display = "none";
+        buttons.style.display = "none";
+        container.style.display = "none";
+        msg_field.style.display = "none";
+
+    }
+});
+
+
+// send a message
+document.getElementById("msg_send").addEventListener('click', () => {
+    renderMessage(document.getElementById("display_id").value);
+    document.getElementById("msg_input").value = "";
+});
+
+// send a message
+document.getElementById("msg_input").addEventListener('keydown', (e) => {
+    if(e.code === "Enter") {
+        renderMessage(document.getElementById("display_id").value);
+        document.getElementById("msg_input").value = "";
+    }
+});
 
 checkUserLogin();

@@ -49,7 +49,6 @@ export function unload() {
     document.getElementById("login_page").style.display ="none";
     document.getElementById("error_pop_up").style.display ="none";
     document.getElementById("application_page").style.display ="none";
-    document.getElementById("default_profile_picture").style.display ="none";
     document.getElementById("loading").style.display = "none";
 }
 
@@ -57,7 +56,7 @@ export const calculateTimeDate = (isoString) => {
     // console.log(isoString);
     // https://www.codegrepper.com/code-examples/javascript/javascript+get+current+time+in+iso+format
     const time = new Date(isoString).toLocaleTimeString('en',
-                { timeStyle: 'short', hour12: false, timeZone: 'UTC' });
+                { timeStyle: 'short', hour12: true, timeZone: 'Australia/Sydney' });
     const date = new Date(isoString);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -71,4 +70,14 @@ export const calculateTimeDate = (isoString) => {
     }
 
     return day +'/' + month + '/'+ year + ' at ' + time;
+}
+/**
+ * Removes all children of the specified element
+ * @param {*} element 
+ */
+export const clearChildren = (element) => {
+    
+    while (element.firstChild) {
+        element.removeChild(element.lastChild);
+    }
 }

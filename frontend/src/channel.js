@@ -3,6 +3,7 @@ import {
     errorPopUp,
     unload,
     calculateTimeDate,
+    clearChildren,
 } from './helpers.js';
 import { 
     displayChannelMessages,
@@ -171,7 +172,7 @@ const createEditForm = (id) => {
 
     // let form = document.getElementById("edit_channel_form_" + id);
     const form = document.getElementById("edit_channel_form");
-    form.innerHTML = "";
+    clearChildren(form);
     const form_heading = document.createElement("h1");
     form_heading.innerText = "Edit channel details";
 
@@ -221,7 +222,7 @@ export function getChannels() {
     // hard reset channel list 
     
     const channel_list = document.getElementById("channel_list");
-    channel_list.innerHTML = '';
+    clearChildren(channel_list);
 
     const token = localStorage.getItem('token');
 
@@ -258,24 +259,32 @@ export function getChannels() {
                     channel_list.appendChild(current);
 
 
+                    /**
+                     * Individual channel listeners for click events, swap to the channel selected
+                     */
                     document.getElementById("channel_" + i["id"]).addEventListener('click', () => {
+                        // channel list navigation for mobile sized screens
+                        // note: hard refresh needed if changing from mobile to desktop displays in console
+                        if (window.screen.width <= 756) {
+                            
+                        }
+
                         console.log("displaying clicked channel " + i["id"]);
                         displayChannelDetails(i["id"]);
-                        document.getElementById("channel_content").innerHTML = "";
+                        clearChildren(document.getElementById("channel_content"));
                         const loading = document.getElementById('loading');
                         loading.style.display = "flex";
-                        console.log(loading);
+                        console.log(i["id"]);
                         setTimeout(function() { displayChannelMessages(i["id"], 0); } , 1000);
                     })
 
+                    /**
+                     * event handler for editing channel details.
+                     */
                     document.getElementById("edit_channel_" + i["id"]).addEventListener('click', () => {
                         createEditForm(i["id"]);
                         document.getElementById("edit_channel").style.display = "block";
                     });
-
-                    // document.getElementById("edit_channel_submit_" + i["id"]).addEventListener('click', () => {
-                    //     console.log("This is the submit" + i["id"]);
-                    // });
                 });
                 
             });
