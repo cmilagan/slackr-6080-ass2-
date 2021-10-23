@@ -286,6 +286,7 @@ export function getChannels() {
                         console.log("displaying clicked channel " + i["id"]);
                         displayChannelDetails(i["id"]);
                         clearChildren(document.getElementById("channel_content"));
+                        clearChildren(document.getElementById("pinned_messages_container"));
                         const loading = document.getElementById('loading');
                         loading.style.display = "flex";
                         console.log(i["id"]);

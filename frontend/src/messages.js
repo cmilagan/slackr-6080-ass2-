@@ -8,7 +8,12 @@ import {
 import { getUserDetails } from './user.js';
 
 
-
+/**
+ * Updates lists with contents of messages and message senders
+ * @param {*} message_list 
+ * @param {*} user_list 
+ * @param {*} message 
+ */
 const getMessageSenders = (message_list, user_list, message) => {
     const token = localStorage.getItem('token');
     message_list.push(message);
@@ -29,13 +34,13 @@ const getMessageSenders = (message_list, user_list, message) => {
             return json;
         }).catch(err => {
             errorPopUp(err);
-            console.log(err);
         })
     );
 }
 
 
-// Helper function to render in new messages
+// Helper function to render in new messages when user sends 
+// so that page does not need to be refreshed
 const displayNewMessage = (id) => {
     const display = document.getElementById("channel_content");
     const token = localStorage.getItem('token');    
@@ -64,7 +69,6 @@ const displayNewMessage = (id) => {
     }).then(data => {
         return data["messages"];
     }).then(messages => {
-        console.log(messages[0].sender);
         getMessageSenders(message_list, promise_list, messages[0]);
         return Promise.all(promise_list);
     }).then(msg_senders => {
@@ -83,7 +87,12 @@ const displayNewMessage = (id) => {
     });
 };
 
-
+/**
+ * Update new message on the backend
+ * @param {*} message 
+ * @param {*} image 
+ * @param {*} id 
+ */
 const sendMessage = (message, image, id) => {
     if (image === undefined) image = "";
     const jsonString = JSON.stringify({
@@ -133,11 +142,7 @@ export const renderMessage = (id) => {
     if (document.getElementById("image_upload").files[0] !== undefined) {
         fileToDataUrl(document.getElementById("image_upload").files[0]).then(data => {
             image = data;
-            // https://stackoverflow.com/questions/2031085/how-can-i-check-if-string-contains-characters-whitespace-not-just-whitespace
-            if (! /\S/.test(message) && image === undefined) {
-                errorPopUp("Please dont send empty messages");
-                return;
-            }
+
             sendMessage(message, image, id);
             document.getElementById("image_upload").value = '';
         });
@@ -161,6 +166,11 @@ const constructMessage = (message, sender) => {
     message_block.style.padding = "10px";
     message_block.style.width = "90%";
     message_block.style.boxShadow = "0px 2px #cccccc";
+    if (message.pinned === true) {
+        message_block.style.backgroundColor = "#faebd7";
+    } else {
+        message_block.style.backgroundColor = "";
+    }
 
     // creating message header section
     const message_header = document.createElement("div");
@@ -255,6 +265,11 @@ const constructMessage = (message, sender) => {
     return message_block;
 }
 
+/**
+ * Delete the message 
+ * @param {*} channel_id 
+ * @param {*} message_id 
+ */
 const deleteMessage = (channel_id, message_id) => {
     const token = localStorage.getItem('token');    
     const url = `http://localhost:5005/message/${channel_id}/${message_id}`;
@@ -283,6 +298,13 @@ const deleteMessage = (channel_id, message_id) => {
     });
 }
 
+/**
+ * Update the message on the backend and front end
+ * @param {*} channel_id 
+ * @param {*} message_id 
+ * @param {*} message 
+ * @param {*} image 
+ */
 const editMessage = (channel_id, message_id, message, image) => {
     const token = localStorage.getItem('token');
     const current_image_container = document.getElementById(`message_image_${message_id}`);
@@ -336,7 +358,12 @@ const editMessage = (channel_id, message_id, message, image) => {
     });
 }
 
-
+/**
+ * Handler for sending different message types (image / text)
+ * @param {*} channel_id 
+ * @param {*} message_id 
+ * @returns 
+ */
 const editMessageRequest = (channel_id, message_id) => {
     const message = document.getElementById(`edit_message_text_${message_id}`).value;
     let image;
@@ -349,8 +376,6 @@ const editMessageRequest = (channel_id, message_id) => {
                 errorPopUp("No modifications have been made please input into the fields");
                 return;
             }
-
-            console.log(message);
             if (message === document.getElementById(`message_text_${message_id}`).value) {
                 errorPopUp("Please modify your text");
                 return;
@@ -364,9 +389,6 @@ const editMessageRequest = (channel_id, message_id) => {
             errorPopUp("No modifications have been made please input into the fields");
             return;
         }
-        console.log(message);
-        console.log(message_id);
-        console.log(document.getElementById(`message_text_${message_id}`));
         if (message === document.getElementById(`message_text_${message_id}`).innerText) {
             errorPopUp("Please modify your text");
             return;
@@ -376,6 +398,11 @@ const editMessageRequest = (channel_id, message_id) => {
     }
 }
 
+/**
+ * General function for creating a edit message form to appear on the modal
+ * @param {*} channel_id 
+ * @param {*} message_id 
+ */
 const createEditMessageForm = (channel_id, message_id) => {
     const form = document.getElementById("edit_message_form");
     clearChildren(form);
@@ -428,12 +455,17 @@ const createEditMessageForm = (channel_id, message_id) => {
 
     form.appendChild(form_container);
     document.getElementById("edit_message_submit_" + message_id).addEventListener("click", () => {
-        console.log(`editing message ${message_id} in ${channel_id}`);
         editMessageRequest(channel_id, message_id);
         document.getElementById("edit_message").style.display = "none";
     });
 }
 
+/**
+ * Function to unreact to a message removing from backend and dom simultaneously
+ * @param {*} channel_id 
+ * @param {*} message_id 
+ * @param {*} react_type 
+ */
 const messageUnReact = (channel_id, message_id, react_type) => {
     const token = localStorage.getItem('token');
 
@@ -460,11 +492,10 @@ const messageUnReact = (channel_id, message_id, react_type) => {
         if (response.ok) {
             let num_reacts = document.getElementById(`${react_type}_react_num_${message_id}`);
             if (num_reacts.innerText === "1") {
-                console.log("successfull unreact");
                 document.getElementById(`${react_type}_react_${message_id}`).style.display = "none";
                 document.getElementById(`${react_type}_react_${message_id}`).remove();
             } else {
-                const curr_num_reacts = parseInt(num_reacts);
+                const curr_num_reacts = parseInt(num_reacts.innerText);
                 num_reacts.innerText = curr_num_reacts - 1;
             }
         } else {
@@ -482,10 +513,8 @@ const constructReactButton = (channel_id, message_id, react_type) => {
     } else if (react_type === "heart") {
         emoji = "💗";
     } else if (react_type === "laugh") {
-        console.log("hello");
         emoji = "😂";
     }
-    console.log(emoji);
     const new_react = document.createElement("div");
     new_react.className = "react_button";
     new_react.id = `${react_type}_react_${message_id}`;
@@ -500,7 +529,6 @@ const constructReactButton = (channel_id, message_id, react_type) => {
     new_react.appendChild(react);
     
     const react_block = document.getElementById(`message_reacts_${message_id}`);
-    console.log(react_block);
     react_block.appendChild(new_react);
 
     // unreact event handler
@@ -509,8 +537,14 @@ const constructReactButton = (channel_id, message_id, react_type) => {
     });
 }
 
+/**
+ * Creates a new react emoji for the given message
+ * @param {*} channel_id 
+ * @param {*} message_id 
+ * @param {*} react_type 
+ */
 const displayNewReact = (channel_id, message_id, react_type) => {
-
+    // if there are no previous reactions made for this message construct a react block
     if (document.getElementById(`message_reacts_${message_id}`) === null) {
         const message_block = document.getElementById(`msg_block_${message_id}`);
         const react_block = document.createElement("div");
@@ -523,12 +557,11 @@ const displayNewReact = (channel_id, message_id, react_type) => {
         constructReactButton(channel_id, message_id, react_type);
 
     } else {
-        console.log(document.getElementById(`${react_type}_react_${message_id}`));
         if (document.getElementById(`${react_type}_react_${message_id}`) === null) {
             constructReactButton(channel_id, message_id, react_type);
         } else {
             const num_reacts_node = document.getElementById(`${react_type}_react_num_${message_id}`);
-            const curr_num_reacts = parseInt(num_reacts_node);
+            const curr_num_reacts = parseInt(num_reacts_node.innerText);
             num_reacts_node.innerText = curr_num_reacts + 1;
         }
         
@@ -562,7 +595,6 @@ const reactToMessage = (channel_id, message_id, react_type) => {
 
     fetch(url, requestOptions).then(response => {
         if (response.ok) {
-            console.log("successfull react");
             displayNewReact(channel_id, message_id, react_type);
         } else {
             response.json().then(data => {
@@ -572,7 +604,11 @@ const reactToMessage = (channel_id, message_id, react_type) => {
     });
 }
 
-
+/**
+ * Function to render in the react message form to the dom
+ * @param {*} channel_id 
+ * @param {*} message_id 
+ */
 const createReactForm = (channel_id, message_id) => {
     const form = document.getElementById("react_message_form");
     clearChildren(form);
@@ -635,28 +671,6 @@ const createReactForm = (channel_id, message_id) => {
 
 }
 
-// Event handlers for message modifications
-const messageOptionHandlers = (channel_id, message_id) => {
-    document.getElementById(`remove_msg_${message_id}`).addEventListener('click', () => {
-        deleteMessage(channel_id, message_id);
-    });
-
-    document.getElementById(`edit_msg_${message_id}`).addEventListener('click', () => {
-        createEditMessageForm(channel_id, message_id);
-        document.getElementById("edit_message").style.display= "block";
-    });
-
-    document.getElementById(`react_msg_${message_id}`).addEventListener('click', () => {
-        createReactForm(channel_id, message_id);
-        document.getElementById("react_message").style.display = "block";
-    });
-
-    document.getElementById(`pin_msg_${message_id}`).addEventListener('click', () => {
-        
-    });
-}
-
-
 /**
  * Display channel messages on 
  * @param {*} id channelId
@@ -702,7 +716,6 @@ export const displayChannelMessages = (id, flag) => {
         // resolve all users data before continuing
         return Promise.all(promise_list);
     }).then(msg_senders => {
-        console.log(message_list, msg_senders);
         if (msg_senders.length !== message_list.length) {
             errorPopUp("Error loading messages");
         }
@@ -713,10 +726,18 @@ export const displayChannelMessages = (id, flag) => {
              // reaction section construction
 
             if (message_list[i].reacts.length !== 0) {
-                console.log(message_list[i].reacts.length);
                 for (let j = 0; j < message_list[i].reacts.length; j++) {
                     displayNewReact(id, message_list[i].id, message_list[i].reacts[j].react);
                 }
+            }
+
+
+            if (message_list[i].pinned === true) {
+                // copy the current message block 
+                let copy = block.cloneNode(true);
+                copy.firstChild.remove(); // remove the options section
+                copy.id = `pinned_msg_block_${message_list[i].id}`;
+                document.getElementById("pinned_messages_container").appendChild(copy);
             }
 
             messageOptionHandlers(id, message_list[i].id);
@@ -729,4 +750,91 @@ export const displayChannelMessages = (id, flag) => {
         errorPopUp(err);
     });
 
+}
+
+const pinMessage = (channel_id, message_id) => {
+    const token = localStorage.getItem('token');    
+    const url = `http://localhost:5005/message/pin/${channel_id}/${message_id}`;
+    const requestOptions = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        },
+        path : {
+            'channelId': channel_id,
+            'messageId': message_id,
+        },
+    };
+
+    fetch(url, requestOptions).then(response => {
+        if (response.ok) {
+            const pinned_msg = document.getElementById(`msg_block_${message_id}`);
+            pinned_msg.style.backgroundColor = "#faebd7";
+            // put a copy of pinned message in pinned messages modal
+            let copy = pinned_msg.cloneNode(pinned_msg);
+            copy.firstChild.remove();
+            copy.id = `pinned_msg_block_${message_id}`;
+            document.getElementById("pinned_messages_container").appendChild(copy);
+        } else {
+            response.json().then(data => {
+                errorPopUp(data["error"]);
+            })
+        }
+    });
+}
+
+const unpinMessage = (channel_id, message_id) => {
+    const token = localStorage.getItem('token');    
+    const url = `http://localhost:5005/message/unpin/${channel_id}/${message_id}`;
+    const requestOptions = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        },
+        path : {
+            'channelId': channel_id,
+            'messageId': message_id,
+        },
+    };
+
+    fetch(url, requestOptions).then(response => {
+        if (response.ok) {
+            const pinned_msg = document.getElementById(`msg_block_${message_id}`);
+            pinned_msg.style.backgroundColor = "";
+            // put a copy of pinned message in pinned messages modal
+            document.getElementById(`pinned_msg_block_${message_id}`).remove();
+
+        } else {
+            response.json().then(data => {
+                errorPopUp(data["error"]);
+            })
+        }
+    });
+}
+
+// Event handlers for message modifications (removing editing pinning reacting)
+const messageOptionHandlers = (channel_id, message_id) => {
+    document.getElementById(`remove_msg_${message_id}`).addEventListener('click', () => {
+        deleteMessage(channel_id, message_id);
+    });
+
+    document.getElementById(`edit_msg_${message_id}`).addEventListener('click', () => {
+        createEditMessageForm(channel_id, message_id);
+        document.getElementById("edit_message").style.display= "block";
+    });
+
+    document.getElementById(`react_msg_${message_id}`).addEventListener('click', () => {
+        createReactForm(channel_id, message_id);
+        document.getElementById("react_message").style.display = "block";
+    });
+
+    document.getElementById(`pin_msg_${message_id}`).addEventListener('click', () => {
+        if (document.getElementById(`msg_block_${message_id}`).style.backgroundColor === "") {
+            pinMessage(channel_id, message_id);
+        } else {
+            unpinMessage(channel_id, message_id);
+        }
+    });
 }

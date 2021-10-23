@@ -198,4 +198,12 @@ document.getElementById("msg_input").addEventListener('keydown', (e) => {
     }
 });
 
+
+document.getElementById('toggle_pinned_messages').addEventListener('click', () => {
+    document.getElementById("pinned_messages").style.display = "block";
+});
+
+document.getElementById('close_pinned_messages').addEventListener('click', () => {
+    document.getElementById("pinned_messages").style.display = "none";
+});
 checkUserLogin();

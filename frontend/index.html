@@ -88,6 +88,15 @@
     </div>
   </div>
 
+  <div id="pinned_messages" class="popup">
+    <div class="popup_content">
+      <span id="close_pinned_messages" class="close">&times;</span>
+      <div id="pinned_messages_container">
+
+      </div>
+    </div>
+  </div>
+
   <!-- Main application navbars -->
 
   <header class="nav" id="navbar">
@@ -162,7 +171,7 @@
           <input type="button" id="invite_channel" class="btn" value="invite">
           <input type="button" id="join_channel" class="btn" value="join">
           <input type="button" id="leave_channel" class="btn" value="leave">
-          <i class="fas fa-thumbtack" style="font-size: 30px;"></i>
+          <i class="fas fa-thumbtack" id="toggle_pinned_messages" style="font-size: 30px;"></i>
         </div>
       </div>
       <!-- Content of channel screen -->

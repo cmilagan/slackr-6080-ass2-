@@ -95,11 +95,13 @@ input[type="text"]:focus, input[type="password"]:focus {
 
 /* Popup: https://www.w3schools.com/howto/howto_css_modals.asp */
 
+
+
 .popup {
     display: none;
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 40vh; /* Location of the box */
+    padding-top: 20vh; /* Location of the box */
     left: 0;
     top: 0;
     align-items: center;
@@ -109,6 +111,7 @@ input[type="text"]:focus, input[type="password"]:focus {
     background-color: rgb(0, 0, 0); /* Fallback color */
     background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
+
 
 /* Modal Content */
 .popup_content {
@@ -283,7 +286,7 @@ h4 {
 
 /* Scroll bar for channel list: https://blog.hubspot.com/website/hide-scrollbar-css */
 
-#channel_list, #channel_content {
+#channel_list, #channel_content, #pinned_messages_container {
     display: block;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
@@ -292,8 +295,12 @@ h4 {
 
 
 /* chrome safari firefox */
-#channel_list::-webkit-scrollbar,  #channel_content::-webkit-scrollbar {
+#channel_list::-webkit-scrollbar,  #channel_content::-webkit-scrollbar, #pinned_messages_container::-webkit-scrollbar {
     display: none;
+}
+
+#pinned_messages_container {
+    max-height: 50vh;
 }
 
 
@@ -376,9 +383,13 @@ h4 {
 #invite_channel {
     background-color: #fefefe;
 }
+
+
 #error_pop_up {
     z-index: 99999;
 }
+
+
 
 #loading {
 	opacity: 1;
