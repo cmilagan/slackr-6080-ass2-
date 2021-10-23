@@ -169,7 +169,6 @@ const constructMessage = (message, sender) => {
     const time_sent = document.createElement("small");
     time_sent.setAttribute("id", `message_time_stamp_${message.id}`)
     time_sent.innerText = calculateTimeDate(message.sentAt);
-    console.log(message.edited);
     if (message.edited === true) {
         time_sent.innerText = calculateTimeDate(message.editedAt) + " (edited)";
     }
@@ -231,7 +230,6 @@ const constructMessage = (message, sender) => {
 
     options.appendChild(options_content);
 
-
     message_header.appendChild(left_section);
 
     const message_content = document.createElement("div");
@@ -252,6 +250,7 @@ const constructMessage = (message, sender) => {
     message_block.appendChild(options);
     message_block.appendChild(message_header);
     message_block.appendChild(message_content);
+
 
     return message_block;
 }
@@ -435,6 +434,144 @@ const createEditMessageForm = (channel_id, message_id) => {
     });
 }
 
+const messageUnReact = (channel_id, message_id, react_type) => {
+    const token = localStorage.getItem('token');
+
+    const url = `http://localhost:5005/message/unreact/${channel_id}/${message_id}`;
+
+    const jsonString = JSON.stringify({
+        react: react_type,
+    });
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        },
+        path : {
+            'channelId': channel_id,
+            'messageId': message_id,
+        },
+        body: jsonString,
+    };
+
+    fetch(url, requestOptions).then(response => {
+        if (response.ok) {
+            let num_reacts = document.getElementById(`${react_type}_react_num_${message_id}`);
+            if (num_reacts.innerText === "1") {
+                console.log("successfull unreact");
+                document.getElementById(`${react_type}_react_${message_id}`).style.display = "none";
+                document.getElementById(`${react_type}_react_${message_id}`).remove();
+            } else {
+                const curr_num_reacts = parseInt(num_reacts);
+                num_reacts.innerText = curr_num_reacts - 1;
+            }
+        } else {
+            response.json().then(data => {
+                errorPopUp(data["error"]);
+            });
+        }
+    });
+}
+
+const constructReactButton = (channel_id, message_id, react_type) => {
+    let emoji;
+    if (react_type === "thank") {
+        emoji = "🙏";
+    } else if (react_type === "heart") {
+        emoji = "💗";
+    } else if (react_type === "laugh") {
+        console.log("hello");
+        emoji = "😂";
+    }
+    console.log(emoji);
+    const new_react = document.createElement("div");
+    new_react.className = "react_button";
+    new_react.id = `${react_type}_react_${message_id}`;
+    new_react.style.display = "flex";
+    new_react.style.justifyContent = "space-around";
+    const num_reacts = document.createElement("p");
+    num_reacts.id = `${react_type}_react_num_${message_id}`;
+    num_reacts.innerText = "1";
+    const react = document.createElement("p");
+    react.innerText = emoji;
+    new_react.appendChild(num_reacts);
+    new_react.appendChild(react);
+    
+    const react_block = document.getElementById(`message_reacts_${message_id}`);
+    console.log(react_block);
+    react_block.appendChild(new_react);
+
+    // unreact event handler
+    document.getElementById(`${react_type}_react_${message_id}`).addEventListener('click', () => {
+        messageUnReact(channel_id, message_id, react_type);
+    });
+}
+
+const displayNewReact = (channel_id, message_id, react_type) => {
+
+    if (document.getElementById(`message_reacts_${message_id}`) === null) {
+        const message_block = document.getElementById(`msg_block_${message_id}`);
+        const react_block = document.createElement("div");
+        react_block.id = `message_reacts_${message_id}`;
+        react_block.style.display = "flex";
+        react_block.style.width = "25%";
+        react_block.style.justifyContent = "space-between";
+        react_block.style.alignItems = "center";
+        message_block.appendChild(react_block);
+        constructReactButton(channel_id, message_id, react_type);
+
+    } else {
+        console.log(document.getElementById(`${react_type}_react_${message_id}`));
+        if (document.getElementById(`${react_type}_react_${message_id}`) === null) {
+            constructReactButton(channel_id, message_id, react_type);
+        } else {
+            const num_reacts_node = document.getElementById(`${react_type}_react_num_${message_id}`);
+            const curr_num_reacts = parseInt(num_reacts_node);
+            num_reacts_node.innerText = curr_num_reacts + 1;
+        }
+        
+
+    }
+    
+}
+
+
+const reactToMessage = (channel_id, message_id, react_type) => {
+    const token = localStorage.getItem('token');
+
+    const url = `http://localhost:5005/message/react/${channel_id}/${message_id}`;
+
+    const jsonString = JSON.stringify({
+        react: react_type,
+    });
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        },
+        path : {
+            'channelId': channel_id,
+            'messageId': message_id,
+        },
+        body: jsonString,
+    };
+
+    fetch(url, requestOptions).then(response => {
+        if (response.ok) {
+            console.log("successfull react");
+            displayNewReact(channel_id, message_id, react_type);
+        } else {
+            response.json().then(data => {
+                errorPopUp(data["error"]);
+            });
+        }
+    });
+}
+
 
 const createReactForm = (channel_id, message_id) => {
     const form = document.getElementById("react_message_form");
@@ -479,6 +616,23 @@ const createReactForm = (channel_id, message_id) => {
     form_container.appendChild(reaction_options);
 
     form.appendChild(form_container);
+
+    document.getElementById(`thank_${message_id}`).addEventListener('click', () => {
+        reactToMessage(channel_id, message_id, "thank");
+        document.getElementById("react_message").style.display = "none";
+    });
+
+    document.getElementById(`laugh_${message_id}`).addEventListener('click', () => {
+        reactToMessage(channel_id, message_id, "laugh");
+        document.getElementById("react_message").style.display = "none";
+
+    });
+
+    document.getElementById(`heart_${message_id}`).addEventListener('click', () => {
+        reactToMessage(channel_id, message_id, "heart");
+        document.getElementById("react_message").style.display = "none";
+    });
+
 }
 
 // Event handlers for message modifications
@@ -555,6 +709,15 @@ export const displayChannelMessages = (id, flag) => {
         for (let i = 0; i < msg_senders.length; i++) {
             const block = constructMessage(message_list[i], msg_senders[i]);
             display.appendChild(block);
+
+             // reaction section construction
+
+            if (message_list[i].reacts.length !== 0) {
+                console.log(message_list[i].reacts.length);
+                for (let j = 0; j < message_list[i].reacts.length; j++) {
+                    displayNewReact(id, message_list[i].id, message_list[i].reacts[j].react);
+                }
+            }
 
             messageOptionHandlers(id, message_list[i].id);
         }
