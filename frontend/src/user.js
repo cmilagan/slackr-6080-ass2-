@@ -62,6 +62,108 @@ const getAllUsers = (promise_list) => {
     );
 }
 
+const updateDetailsRequest = (email, password, bio, name, image) => {
+    const token = localStorage.getItem('token');
+    const url = `http://localhost:5005/user`;
+    let update = {
+        password: password,
+        name: name,
+        bio: bio,
+        image: image,
+    };
+    if (email !== localStorage.getItem('email')) {
+        update["email"] = email;
+    }
+
+    const jsonString = JSON.stringify(update);
+
+    const requestOptions = {
+        method: 'PUT',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        },
+        body: jsonString,
+    };
+
+    fetch(url, requestOptions).then(response => {
+        if (response.ok) {
+            errorPopUp("User details successfully updated");
+            document.getElementById("view_personal_profile").style.display = "none";
+            document.getElementById("users_bio").value = bio;
+            document.getElementById("users_name").value = name;
+            document.getElementById("new_password").value = "";
+            if (image !== "") {
+                document.getElementById("personal_profile_image").src = image;
+            }
+            if (email !== localStorage.getItem('email')) {
+                document.getElementById("users_email").value = email;
+            }
+        } else {
+            response.json().then(data => {
+                errorPopUp(data["error"]);
+            })
+        }
+    });
+
+}
+
+export const updateUserDetails = () => {
+    const email = document.getElementById("users_email").value;
+    let password = document.getElementById("new_password").value;
+    const bio = document.getElementById("users_bio").value;
+    const name = document.getElementById("users_name").value;
+
+    if (password === "") {
+        password = document.getElementById("users_password").value;
+    }
+    let image;
+    if (document.getElementById("update_profile_pic").files[0] !== undefined) {
+        fileToDataUrl(document.getElementById("update_profile_pic").files[0]).then(data => {
+            image = data;
+            updateDetailsRequest(email, password, bio, name, image);
+            document.getElementById("update_profile_pic").value = "";
+        });
+    } else {
+        image = "";
+        updateDetailsRequest(email, password, bio, name, image);
+    }
+}
+
+
+/**
+ * Gets the details of the currently logged in user via localstorage comparisons
+ */
+export const getLoggedInUserDetails = () => {
+    const user_list = [];
+    getAllUsers(user_list);
+    Promise.all(user_list).then(response => {
+        const logged_in_user_details = [];
+        console.log(response[0]["users"], localStorage.getItem('email'));
+        let result = response[0]["users"].filter(user => {
+            return user.email === localStorage.getItem('email');
+        })
+        console.log(result);
+        getUserDetails(result[0].id, logged_in_user_details)
+
+        return Promise.all(logged_in_user_details);
+    }).then(data => {
+        if (data[0].image !== "") {
+            document.getElementById("personal_profile_image").src = data[0].image;
+        }
+        document.getElementById("personal_profile_header").innerText = `${data[0].name}'s profile :D`;
+        document.getElementById("users_password").value = localStorage.getItem('password');
+        document.getElementById("users_name").value = data[0].name;
+        document.getElementById("users_bio").value = data[0].bio;
+        document.getElementById("users_email").value = localStorage.getItem('email');
+    });
+}
+
+
+/**
+ * Invites a user by their user_id
+ * @param {*} user_id 
+ */
 const inviteUser = (user_id) => {
     console.log(user_id);
     const token = localStorage.getItem('token');
@@ -96,8 +198,9 @@ const inviteUser = (user_id) => {
     });
 }
 
-
+// creates checklist to invite multiple users at once.
 const createUserCheckList = (user_id, user_name) => {
+
     const list = document.getElementById('user_list');
     const user_container = document.createElement("div");
     user_container.style.display = "flex";

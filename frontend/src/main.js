@@ -22,7 +22,7 @@ import {
 import {
     displayChannelMessages, renderMessage,
 } from './messages.js';
-import { generateUserList } from './user.js';
+import { generateUserList, getLoggedInUserDetails, updateUserDetails } from './user.js';
 
 /**
  * Check that a user has been logged in.
@@ -190,6 +190,8 @@ document.getElementById("brand").addEventListener('click', () => {
 document.getElementById("msg_send").addEventListener('click', () => {
     renderMessage(document.getElementById("display_id").value);
     document.getElementById("msg_input").value = "";
+    document.getElementById("image_icon").style.backgroundColor = "#f6cd59";
+
 });
 
 // send a message
@@ -197,6 +199,7 @@ document.getElementById("msg_input").addEventListener('keydown', (e) => {
     if(e.code === "Enter") {
         renderMessage(document.getElementById("display_id").value);
         document.getElementById("msg_input").value = "";
+        document.getElementById("image_icon").style.backgroundColor = "#f6cd59";
     }
 });
 
@@ -228,6 +231,47 @@ document.getElementById('join_channel').addEventListener('click', () => {
 
 document.getElementById('leave_channel').addEventListener('click', () => {
     leaveChannel(document.getElementById("display_id").value);
+});
+
+document.getElementById("close_user_profile").addEventListener('click', () => {
+    document.getElementById('view_user_profile').style.display = "none";
+});
+
+document.getElementById("profile_button").addEventListener('click', () => {
+    document.getElementById("view_personal_profile").style.display = "block";
+    getLoggedInUserDetails();
+});
+
+document.getElementById("close_personal_profile").addEventListener('click', () => {
+    document.getElementById("view_personal_profile").style.display = "none";
+});
+
+// toggle password visibility on and off on user profile
+document.getElementById("visibility_switch").addEventListener('click', () => {
+    if (document.getElementById("users_password").type === "text") {
+        document.getElementById("users_password").type = "password";
+    } else {
+        document.getElementById("users_password").type = "text";
+    }
+});
+
+document.getElementById("submit_profile_changes").addEventListener('click', () => {
+    updateUserDetails();
+});
+
+/**
+ * Visual indicator that a file has been chosen and can be sent
+ */
+document.getElementById("image_upload").addEventListener("change", () => {
+    const node = document.getElementById("image_upload");
+    if (node.files[0] !== undefined) {
+        document.getElementById("image_icon").style.backgroundColor = "#c38d9d";
+
+    }
+});
+
+document.getElementById("close_channel_images").addEventListener('click', () => {
+    document.getElementById("view_channel_images").style.display = "none";
 });
 
 checkUserLogin();

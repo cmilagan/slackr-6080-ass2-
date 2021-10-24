@@ -111,11 +111,77 @@
     </div>
   </div>
 
+
+  <!-- Pop up for other user profiles -->
+  <div id="view_user_profile" class="popup">
+    <div class="popup_content">
+      <span id="close_user_profile" class="close">&times;</span>
+      <div id="profile_container">
+          <img id="profile_image" src="./assets/default_profile.jpeg" alt="">
+          <div class="profile_details" style="width: 70%">
+            <h3 id="profile_user_name"></h3>
+            <p id="profile_user_bio">bio:</p>
+            <p id="profile_user_email">email:</p>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop up for personal profiles -->
+  <div id="view_personal_profile" class="popup">
+    <div class="popup_content">
+      <span id="close_personal_profile" class="close">&times;</span>
+      <div id="personal_profile_container">
+          <img id="personal_profile_image" src="./assets/default_profile.jpeg" alt="">
+          <div class="profile_details" style="width: 70%">
+            <h1 id="personal_profile_header"></h1>
+            <label id="visibility_switch">Current Password <i class="fas fa-eye"></i></label>
+            <input type="password" id="users_password" readonly>
+            <br>
+            <label>name: </label>
+            <input type="text" id="users_name">
+            <br>
+            <label>bio: </label>
+            <input type="text" id="users_bio">
+            <br>
+            <label>email: </label>
+            <input type="text" id="users_email">
+            <br>
+            <label>Change Password: </label>
+            <input type="password" id="new_password">
+            <br>
+            <label>Update profile pic: </label>
+            <input type="file" id="update_profile_pic">
+            <br>
+            <input type="button" id="submit_profile_changes" value="submit" style="margin-top: 5%;">
+
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Pop up for full image view -->
+  <div id="view_channel_images" class="popup">
+    <div class="popup_content">
+      <span id="close_channel_images" class="close">&times;</span>
+      <div id="full_view_container">
+          <div id="image_container">
+
+          </div>
+          <div id="image_arrows">
+            <i class="fas fa-arrow-left" id="left_button"></i>
+            <i class="fas fa-arrow-right" id="right_button"></i>
+          </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Main application navbars -->
 
   <header class="nav" id="navbar">
     <h1 id="brand">Slackr.</h1>
-    <div class="nav-item" id="home_button">PROFILE</div>
+    <div class="nav-item" id="profile_button">PROFILE</div>
     <div class="nav-item" id="signout_button">SIGN OUT</div>
   </header>
   <main role="main">
@@ -174,11 +240,11 @@
       <!-- Name/Description display of currently selected channel -->
       <div id="channel_nav">
         <div id="channel_details">
-          <h4 id="heading_display">Change this to be channel name</h4>
+          <h4 id="heading_display">HOME</h4>
           <br>
-          <small id="description_display">This is the channel description</small>
+          <small id="description_display">best page on this site</small>
           <br>
-          <small id="attribute_display">Created by: blah, on:</small>
+          <small id="attribute_display">slackr. home of big bird</small>
           <input type="text" style="display: none" id="display_id">
         </div>
         <div id="channel_buttons">
@@ -196,7 +262,7 @@
           <div class="ball"></div>
         </div>
         <div id="channel_content">
-
+          <img src="./assets/bigbird.jpg" alt="" style="width: 100%; height: 100%">
         </div>
       </div>
       <!-- Send message field for channels -->

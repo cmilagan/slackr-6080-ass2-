@@ -310,6 +310,9 @@ h4 {
     max-height: 40vh;
 }
 
+.image_preview:hover {
+    cursor: pointer;
+}
 
 /* Individual channel styling */
 #channel_list div {
@@ -390,12 +393,39 @@ h4 {
     background-color: #fefefe;
 }
 
+#full_view_container {
+    margin: 0 auto;
+    text-align: center;
+}
+
+#image_container {
+    display: flex;
+    min-height: 50vh;
+    max-height: 50vh;
+    width: 100%;
+}
+
+#profile_container, #personal_profile_container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+#profile_image, #personal_profile_image {
+    height: 25%;
+    width: 25%;
+    border-radius: 50%;
+}
 
 #error_pop_up {
     z-index: 99999;
 }
 
-
+.user:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
 
 #loading {
 	opacity: 1;
@@ -434,7 +464,6 @@ h4 {
 }
 
 
-
 @media screen and (max-width: 756px) {
     #login_form, #register_form {
         width: 50%;
@@ -464,6 +493,16 @@ h4 {
         ;
     }
     
+
+    #profile_container, #personal_profile_container {
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .profile_details {
+        margin: 0 auto;
+    }
 
     #react_message_form .btn {
         background: transparent;

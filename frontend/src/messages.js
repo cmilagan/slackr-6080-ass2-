@@ -80,6 +80,26 @@ const displayNewMessage = (id) => {
         const block = constructMessage(message_list[0], msg_senders[0]);
         display.insertBefore(block, display.firstChild);
 
+        // event handler to view user profile
+        document.getElementById(`message_${message_list[0].id}_${message_list[0].sender}`).addEventListener('click', () => {
+            if (msg_senders[0].image !== null) {
+                document.getElementById("profile_image").src = msg_senders[0].image;
+            }
+            document.getElementById("profile_user_name").innerText = msg_senders[0].name;
+            document.getElementById("profile_user_bio").innerText = "bio: " + msg_senders[0].bio;
+            document.getElementById("profile_user_email").innerText = "email: " + msg_senders[0].email;
+            document.getElementById("view_user_profile").style.display = "block";
+
+        });
+
+        if (document.getElementById(`message_image_${message_list[0].id}`) !== null) {
+            document.getElementById(`message_image_${message_list[0].id}`).addEventListener('click', () => {
+                console.log("hello");
+                document.getElementById("view_channel_images").style.display = "block";
+            });
+        }
+        
+
         messageOptionHandlers(id, message_list[0].id);
 
     }).catch(err => {
@@ -142,9 +162,13 @@ export const renderMessage = (id) => {
     if (document.getElementById("image_upload").files[0] !== undefined) {
         fileToDataUrl(document.getElementById("image_upload").files[0]).then(data => {
             image = data;
-
+            if (message !== "") {
+                errorPopUp("Cannot image and text in the same message");
+                document.getElementById("image_upload").value = undefined;
+                return;
+            }
             sendMessage(message, image, id);
-            document.getElementById("image_upload").value = '';
+            document.getElementById("image_upload").value = undefined;
         });
     } else {
         // no image uploaded in message
@@ -183,6 +207,8 @@ const constructMessage = (message, sender) => {
         time_sent.innerText = calculateTimeDate(message.editedAt) + " (edited)";
     }
     const user_name = document.createElement("h4");
+    user_name.className = "user";
+    user_name.id = `message_${message.id}_${message.sender}`;
     user_name.innerText = sender.name;
     const profile_picture = document.createElement("img");
     profile_picture.src = sender.image;
@@ -242,6 +268,7 @@ const constructMessage = (message, sender) => {
 
     message_header.appendChild(left_section);
 
+    // contents of the message
     const message_content = document.createElement("div");
     message_content.id = `message_content_${message.id}`;
     const text = document.createElement("p");
@@ -249,6 +276,7 @@ const constructMessage = (message, sender) => {
     text.innerText = message.message;
     const img = document.createElement("img");
     img.setAttribute("id", `message_image_${message.id}`);
+    img.className = "image_preview";
     img.style.height = "auto";
     img.style.width = "20%";
     img.src = message.image;
@@ -260,7 +288,6 @@ const constructMessage = (message, sender) => {
     message_block.appendChild(options);
     message_block.appendChild(message_header);
     message_block.appendChild(message_content);
-
 
     return message_block;
 }
@@ -561,11 +588,9 @@ const displayNewReact = (channel_id, message_id, react_type) => {
             constructReactButton(channel_id, message_id, react_type);
         } else {
             const num_reacts_node = document.getElementById(`${react_type}_react_num_${message_id}`);
-            console.log(document.getElementById(`${react_type}_react_num_${message_id}`));
             const curr_num_reacts = parseInt(num_reacts_node.innerText);
             num_reacts_node.innerText = curr_num_reacts + 1;
         }
-        
 
     }
     
@@ -723,6 +748,35 @@ export const displayChannelMessages = (id, flag) => {
         for (let i = 0; i < msg_senders.length; i++) {
             const block = constructMessage(message_list[i], msg_senders[i]);
             display.appendChild(block);
+
+            // view user profile
+            document.getElementById(`message_${message_list[i].id}_${message_list[i].sender}`).addEventListener('click', () => {
+                
+                
+                if (msg_senders[i].image !== null) {
+                    document.getElementById("profile_image").src = msg_senders[i].image;
+                } else {
+                    document.getElementById("profile_image").src = "./assets/default_profile.jpeg";
+                }
+                let bio = msg_senders[i].bio;
+                if (msg_senders[i].bio === null) {
+                    bio = "User has no biography";
+                }
+                document.getElementById("profile_user_name").innerText = msg_senders[i].name;
+                document.getElementById("profile_user_bio").innerText = "BIO: " + bio;
+                document.getElementById("profile_user_email").innerText = "EMAIL: " + msg_senders[i].email;
+                document.getElementById("view_user_profile").style.display = "block";
+    
+            });
+
+            //
+            if (document.getElementById(`message_image_${message_list[i].id}`) !== null) {
+                document.getElementById(`message_image_${message_list[i].id}`).addEventListener('click', () => {
+                    console.log("hello");
+                    document.getElementById("view_channel_images").style.display = "block";
+                    // https://stackoverflow.com/questions/17574628/scroll-to-element-in-horizontal-div/17599735
+                });
+            }
 
              // reaction section construction
 

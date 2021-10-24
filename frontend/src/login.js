@@ -32,7 +32,9 @@ export function login() {
         if (response.ok) {
             response.json().then((data) => {
                 localStorage.setItem('token', data['token']);
-                console.log(data['token']);
+                localStorage.setItem('password', password);
+                localStorage.setItem('email', email);
+
                 loggedIn();
             })
         } else {
@@ -74,7 +76,8 @@ export function register() {
         if (response.ok) {
             response.json().then((data) => {
                 localStorage.setItem('token', data['token']);
-                console.log(data['token']);
+                localStorage.setItem('password', password);
+                localStorage.setItem('email', email);
                 loggedIn();
             })           
         } else {
@@ -100,7 +103,6 @@ export function signout() {
 
     };
 
-    console.log(token);
     fetch('http://localhost:5005/auth/logout', requestOptions).then(response => {
         if (response.ok) {
             localStorage.removeItem('token');
@@ -108,6 +110,9 @@ export function signout() {
         } else {
             response.json().then((data) => {
                 localStorage.removeItem('token');
+                localStorage.removeItem('password');
+                localStorage.removeItem('email');
+
                 notLoggedIn();
                 errorPopUp(data["error"]);
             });
@@ -121,7 +126,6 @@ export function signout() {
 export function notLoggedIn() {
     unload();
     document.getElementById("login_page").style.display ="flex";
-    console.log("user is not logged in, displaying login page");
 }
 /**
  * If the user is logged in, display the main application page
@@ -130,6 +134,5 @@ export function loggedIn() {
     unload();
     document.getElementById("navbar").style.display = "flex";
     document.getElementById("application_page").style.display = "grid";
-    console.log(localStorage.getItem('token'));
     getChannels();
 }
