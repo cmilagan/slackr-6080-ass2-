@@ -16,7 +16,7 @@ import {
 } from './login.js';
 
 import {
-    createNewChannel,
+    createNewChannel, joinChannel, leaveChannel,
 } from './channel.js';
 
 import {
@@ -220,6 +220,14 @@ document.getElementById('invite_channel').addEventListener('click', () => {
 
 document.getElementById('close_invite_channel').addEventListener('click', () => {
     document.getElementById('invite_to_channel').style.display = "none";
+});
+
+document.getElementById('join_channel').addEventListener('click', () => {
+    joinChannel(document.getElementById("display_id").value);
+});
+
+document.getElementById('leave_channel').addEventListener('click', () => {
+    leaveChannel(document.getElementById("display_id").value);
 });
 
 checkUserLogin();

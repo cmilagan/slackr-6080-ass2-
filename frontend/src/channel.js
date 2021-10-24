@@ -53,6 +53,73 @@ export function createNewChannel() {
 }
 
 /**
+ * User leaves channel upon pressing join button
+ * @param {*} id 
+ */
+export const leaveChannel = (id) => {
+    const token = localStorage.getItem('token');
+    const url = `http://localhost:5005/channel/${id}/leave`;
+    const requestOptions = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        },
+        path : {
+            'channelId': id,
+        },
+    };
+    fetch(url, requestOptions).then(response => {
+        if (response.ok) {
+            errorPopUp("successfully left channel");
+            document.getElementById("heading_display").innerText = "You are not a member of this channel";
+            document.getElementById("description_display").innerText = "Ask a user to invite you :)";
+            document.getElementById("attribute_display").style.display = "none";
+            document.getElementById("join_channel").style.display = "block";
+            document.getElementById("leave_channel").style.display = "none";
+            document.getElementById("invite_channel").style.display = "none";
+            clearChildren(document.getElementById("channel_content"));
+            // displayChannelMessages(id);
+        } else {
+            response.json().then(data => {
+                errorPopUp(data["error"]);
+            })
+        }
+    })
+}
+
+
+/**
+ * User joins channel upon pressing join button
+ * @param {*} id 
+ */
+export const joinChannel = (id) => {
+    const token = localStorage.getItem('token');
+    const url = `http://localhost:5005/channel/${id}/join`;
+    const requestOptions = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        },
+        path : {
+            'channelId': id,
+        },
+    };
+    fetch(url, requestOptions).then(response => {
+        if (response.ok) {
+            errorPopUp("successfully joined channel");
+            displayChannelDetails(id);
+            setTimeout(function() { displayChannelMessages(id, 0); } , 1000);
+        } else {
+            response.json().then(data => {
+                errorPopUp(data["error"]);
+            })
+        }
+    })
+}
+
+/**
  * display the channel details on the page channel navigation bar
  * @param {*} id 
  */
@@ -87,6 +154,8 @@ const displayChannelDetails = (id) => {
             document.getElementById("join_channel").style.display = "block";
             document.getElementById("leave_channel").style.display = "none";
             document.getElementById("invite_channel").style.display = "none";
+            document.getElementById("display_id").value = id;
+
 
         }
     }).then(data => {
