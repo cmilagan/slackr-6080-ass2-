@@ -70,36 +70,12 @@ const displayChannelDetails = (id) => {
         }
     }
 
-    let date_time;
-
-    /**
-     * Call back funtion for getting the users details 
-     */
-    let user_name;
-    const success = (data) => {
-        user_name = data["name"];
-        document.getElementById("attribute_display").innerText = "Created by: " +  user_name + " on: " + date_time;
-    }
-
+    const promise_list = [];
+    let date_time
     fetch('http://localhost:5005/channel/' + id, requestOptions).then(response => {
+        
         if (response.ok) {
-            console.log("Details obtained");
-            response.json().then(data => {
-                document.getElementById("heading_display").innerText = data["name"];
-                let channel_type = "Public, "
-                if (data["private"]) {
-                    channel_type = "Private, "
-                }
-                document.getElementById("display_id").value = id;
-                document.getElementById("description_display").innerText = "Description: " + channel_type + data["description"];
-                document.getElementById("attribute_display").style.display = "block";
-                document.getElementById("join_channel").style.display = "none";
-                document.getElementById("invite_channel").style.display = "block";
-                document.getElementById("leave_channel").style.display = "block";
-                getUserDetails(data["creator"], success);
-                date_time = calculateTimeDate(data["createdAt"]);
-                
-            });
+            return response.json();
         } else {
             response.json().then(data => {
                 console.log(data["error"]);
@@ -113,7 +89,24 @@ const displayChannelDetails = (id) => {
             document.getElementById("invite_channel").style.display = "none";
 
         }
-    });
+    }).then(data => {
+        document.getElementById("heading_display").innerText = data["name"];
+        let channel_type = "Public, "
+        if (data["private"]) {
+            channel_type = "Private, "
+        }
+        document.getElementById("display_id").value = id;
+        document.getElementById("description_display").innerText = "Description: " + channel_type + data["description"];
+        document.getElementById("attribute_display").style.display = "block";
+        document.getElementById("join_channel").style.display = "none";
+        document.getElementById("invite_channel").style.display = "block";
+        document.getElementById("leave_channel").style.display = "block";
+        date_time = calculateTimeDate(data["createdAt"]);
+        getUserDetails(data["creator"], promise_list);
+        return Promise.all(promise_list);
+    }).then(creator => {
+        document.getElementById("attribute_display").innerText = `Created by: ${creator[0]["name"]}, on ${date_time}`;
+    })
 }
 
 

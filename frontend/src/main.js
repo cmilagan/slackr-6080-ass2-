@@ -4,6 +4,7 @@ import {
     fileToDataUrl,
     errorPopUp,
     unload,
+    clearChildren,
 } from './helpers.js';
 
 import {
@@ -21,6 +22,7 @@ import {
 import {
     displayChannelMessages, renderMessage,
 } from './messages.js';
+import { generateUserList } from './user.js';
 
 /**
  * Check that a user has been logged in.
@@ -198,12 +200,26 @@ document.getElementById("msg_input").addEventListener('keydown', (e) => {
     }
 });
 
-
+// Showcase pinned messages modal
 document.getElementById('toggle_pinned_messages').addEventListener('click', () => {
     document.getElementById("pinned_messages").style.display = "block";
 });
 
+// close pinned messages modal
 document.getElementById('close_pinned_messages').addEventListener('click', () => {
     document.getElementById("pinned_messages").style.display = "none";
 });
+
+// open invite users modal
+document.getElementById('invite_channel').addEventListener('click', () => {
+    generateUserList();
+    clearChildren(document.getElementById('user_list'));
+    document.getElementById('invite_to_channel').style.display = "block";
+    
+});
+
+document.getElementById('close_invite_channel').addEventListener('click', () => {
+    document.getElementById('invite_to_channel').style.display = "none";
+});
+
 checkUserLogin();

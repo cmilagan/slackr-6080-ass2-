@@ -199,9 +199,6 @@ input[type="text"]:focus, input[type="password"]:focus {
 }
 
 #channel_search, #msg_input {
-    /* background-image: url('../assets/searchicon.png');
-    background-position: 10px 12px;
-    background-repeat: no-repeat; */
     border: none;
     background-color: #fefefe;
     border-radius: 20px;
@@ -286,7 +283,7 @@ h4 {
 
 /* Scroll bar for channel list: https://blog.hubspot.com/website/hide-scrollbar-css */
 
-#channel_list, #channel_content, #pinned_messages_container {
+#channel_list, #channel_content, #pinned_messages_container, #user_list {
     display: block;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
@@ -295,7 +292,7 @@ h4 {
 
 
 /* chrome safari firefox */
-#channel_list::-webkit-scrollbar,  #channel_content::-webkit-scrollbar, #pinned_messages_container::-webkit-scrollbar {
+#channel_list::-webkit-scrollbar,  #channel_content::-webkit-scrollbar, #pinned_messages_container::-webkit-scrollbar, #user_list::-webkit-scrollbar {
     display: none;
 }
 
@@ -303,6 +300,15 @@ h4 {
     max-height: 50vh;
 }
 
+#invite_users {
+    text-align: center;
+}
+
+#user_list {
+    width: 100%;
+    margin: 0 auto;
+    max-height: 40vh;
+}
 
 
 /* Individual channel styling */

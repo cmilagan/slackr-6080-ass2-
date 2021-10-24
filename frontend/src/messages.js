@@ -561,6 +561,7 @@ const displayNewReact = (channel_id, message_id, react_type) => {
             constructReactButton(channel_id, message_id, react_type);
         } else {
             const num_reacts_node = document.getElementById(`${react_type}_react_num_${message_id}`);
+            console.log(document.getElementById(`${react_type}_react_num_${message_id}`));
             const curr_num_reacts = parseInt(num_reacts_node.innerText);
             num_reacts_node.innerText = curr_num_reacts + 1;
         }
