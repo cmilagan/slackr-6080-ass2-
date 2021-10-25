@@ -107,6 +107,8 @@ export function signout() {
     fetch('http://localhost:5005/auth/logout', requestOptions).then(response => {
         if (response.ok) {
             localStorage.removeItem('token');
+            localStorage.removeItem('password');
+            localStorage.removeItem('email');
             notLoggedIn();
         } else {
             response.json().then((data) => {
@@ -115,7 +117,7 @@ export function signout() {
                 localStorage.removeItem('email');
 
                 notLoggedIn();
-                errorPopUp(data["error"]);
+                // errorPopUp(data["error"]);
             });
         }
     });

@@ -11,3 +11,7 @@ Dynamic generation of elements for channel list and edit channel details form.
 Added signout button and functionality on navbar
 
 Smooth animations/transitions for elements
+
+React counters for the different types of reacts on each message
+
+big bird
