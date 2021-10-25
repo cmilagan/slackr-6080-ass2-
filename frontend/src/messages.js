@@ -179,7 +179,7 @@ export const renderMessage = (id) => {
             errorPopUp("Please dont send empty messages");
             return;
         }
-        sendMessage(message, image, id);
+        sendMessage(message, "", id);
     }
 
 }
@@ -284,7 +284,7 @@ const constructMessage = (message, sender) => {
     img.style.width = "20%";
     img.src = message.image;
     message_content.appendChild(text);
-    if (message.image !== undefined) {
+    if (message.image !== undefined && message.image !== "") {
         message_content.appendChild(img);
         const full_view_container = document.createElement("div");
         full_view_container.style.minWidth = "100%";

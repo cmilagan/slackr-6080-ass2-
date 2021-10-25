@@ -29,19 +29,16 @@ import { generateUserList, getLoggedInUserDetails, updateUserDetails } from './u
 window.onhashchange = loadHashPage;
 function loadHashPage() {
     let hash = location.hash;
-    console.log(hash);
     if (hash === "#profile") {
 
     } else if (/^#channel={/.test(hash)) {
         const id = hash.substring(10, hash.length - 1);
         const channel_id = parseInt(id);
-        console.log(channel_id);
 
         
     } else if (/^#profile={/.test(hash)) {
-        const id = hash.substring(10, hash.length - 1);
-        const channel_id = parseInt(id);
-        console.log(channel_id);
+        const id = hash.substring(9, hash.length - 1);
+        const user_id = parseInt(id);
     }
 }
 
@@ -268,7 +265,6 @@ document.getElementById("channel_content").addEventListener('scroll', () => {
     if (element.scrollHeight + element.scrollTop <= element.clientHeight + 1 && element.childElementCount !== 0) {
         // errorPopUp("hello this is when i reach the top");
         numChildren = element.childElementCount;
-        console.log(numChildren);
         id = document.getElementById("display_id").value;
         loading.style.display = "flex";
         setTimeout(function() { displayChannelMessages(id, numChildren); }, 1000);
@@ -313,8 +309,6 @@ document.getElementById("brand").addEventListener('click', () => {
         const msg_field = document.getElementById("message_field");
 
         document.getElementById("application_page").style.gridTemplateAreas = '"search" "list" "user_options"'
-
-        console.log(document.getElementById("application_page").style.gridTemplateAreas);
 
         search_filter.style.display = "flex";
         channel_list.style.display = "block";
@@ -363,7 +357,6 @@ document.getElementById("image_upload").addEventListener("change", () => {
     const node = document.getElementById("image_upload");
     if (node.files[0] !== undefined) {
         document.getElementById("image_icon").style.backgroundColor = "#c38d9d";
-        document.getElementById("image_upload").value = "";
     }
 });
 
