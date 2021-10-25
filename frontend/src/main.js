@@ -274,4 +274,17 @@ document.getElementById("close_channel_images").addEventListener('click', () => 
     document.getElementById("view_channel_images").style.display = "none";
 });
 
+/**
+ * Buttons to navigate through full screen images;
+ */
+document.getElementById("left_button").addEventListener('click', () => {
+    const view_width = document.getElementById("image_container").offsetWidth;
+    document.getElementById("image_container").scrollBy(- view_width, 0);
+});
+
+document.getElementById("right_button").addEventListener('click', () => {
+    const view_width = document.getElementById("image_container").offsetWidth;
+    document.getElementById("image_container").scrollBy(view_width, 0);
+});
+
 checkUserLogin();

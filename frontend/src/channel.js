@@ -53,7 +53,7 @@ export function createNewChannel() {
 }
 
 /**
- * User leaves channel upon pressing join button
+ * User leaves channel upon pressing leave button
  * @param {*} id 
  */
 export const leaveChannel = (id) => {

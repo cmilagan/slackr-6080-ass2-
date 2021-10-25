@@ -398,11 +398,24 @@ h4 {
     text-align: center;
 }
 
+.image_block img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
 #image_container {
     display: flex;
     min-height: 50vh;
     max-height: 50vh;
+    overflow-x: scroll;
+    /* -ms-overflow-style: none; */
+    /* scrollbar-width: none; */
     width: 100%;
+}
+
+#image_container::-webkit-scrollbar {
+    /* display: none; */
 }
 
 #profile_container, #personal_profile_container {

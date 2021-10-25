@@ -96,6 +96,8 @@ const displayNewMessage = (id) => {
             document.getElementById(`message_image_${message_list[0].id}`).addEventListener('click', () => {
                 console.log("hello");
                 document.getElementById("view_channel_images").style.display = "block";
+                document.getElementById(`full_image_container_${message_list[0].id}`).scrollIntoView();
+            
             });
         }
         
@@ -275,7 +277,7 @@ const constructMessage = (message, sender) => {
     text.id = `message_text_${message.id}`;
     text.innerText = message.message;
     const img = document.createElement("img");
-    img.setAttribute("id", `message_image_${message.id}`);
+    img.id = `message_image_${message.id}`;
     img.className = "image_preview";
     img.style.height = "auto";
     img.style.width = "20%";
@@ -283,6 +285,20 @@ const constructMessage = (message, sender) => {
     message_content.appendChild(text);
     if (message.image !== undefined) {
         message_content.appendChild(img);
+        const full_view_container = document.createElement("div");
+        full_view_container.style.minWidth = "100%";
+        full_view_container.style.display = "flex";
+        full_view_container.style.justifyContent = "center";
+        full_view_container.style.alignItems = "center";
+
+        full_view_container.id = `full_image_container_${message.id}`;
+        full_view_container.className = "image_block";
+        const full_view = document.createElement("img");
+        full_view.src = message.image;
+        full_view.id = `full_image_${message.id}`;
+
+        full_view_container.appendChild(full_view);
+        document.getElementById("image_container").appendChild(full_view_container);
     }
 
     message_block.appendChild(options);
@@ -769,12 +785,13 @@ export const displayChannelMessages = (id, flag) => {
     
             });
 
-            //
+            // event handler for clicking on an image and displaying full view
             if (document.getElementById(`message_image_${message_list[i].id}`) !== null) {
                 document.getElementById(`message_image_${message_list[i].id}`).addEventListener('click', () => {
                     console.log("hello");
                     document.getElementById("view_channel_images").style.display = "block";
-                    // https://stackoverflow.com/questions/17574628/scroll-to-element-in-horizontal-div/17599735
+                    document.getElementById(`full_image_container_${message_list[i].id}`).scrollIntoView();
+                
                 });
             }
 
