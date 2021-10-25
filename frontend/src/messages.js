@@ -167,11 +167,11 @@ export const renderMessage = (id) => {
             image = data;
             if (message !== "") {
                 errorPopUp("Cannot image and text in the same message");
-                document.getElementById("image_upload").value = undefined;
+                document.getElementById("image_upload").value = "";
                 return;
             }
             sendMessage(message, image, id);
-            document.getElementById("image_upload").value = undefined;
+            document.getElementById("image_upload").value = "";
         });
     } else {
         // no image uploaded in message

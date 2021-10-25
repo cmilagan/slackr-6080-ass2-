@@ -8,3 +8,5 @@ Submit messages by pressing enter on message field rather than having to press t
 
 Dynamic generation of elements for channel list and edit channel details form.
 
+Added signout button and functionality on navbar
+

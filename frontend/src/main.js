@@ -275,6 +275,29 @@ document.getElementById("channel_content").addEventListener('scroll', () => {
     } 
 });
 
+window.addEventListener('resize', () => {
+    if (window.screen.width > 756) {
+        // const search_filter = document.getElementById("filter");
+        // const channel_list = document.getElementById("channel_list");
+        // const add_channel = document.getElementById("user_options");
+        
+
+        // const details = document.getElementById("channel_nav");
+        // const buttons = document.getElementById("channel_buttons");
+        // const container = document.getElementById("message_container");
+        // const msg_field = document.getElementById("message_field");
+        // document.getElementById("application_page").style.gridTemplateAreas = '"search details" "list content_container" "user_options msg_field"'
+    
+        // search_filter.style.display = "flex";
+        // channel_list.style.display = "block";
+        // add_channel.style.display = "flex";
+        // details.style.display = "flex";
+        // buttons.style.display = "flex";
+        // container.style.display = "block";
+        // msg_field.style.display = "flex";
+    } 
+});
+
 
 // mobile layout
 document.getElementById("brand").addEventListener('click', () => {
@@ -340,6 +363,7 @@ document.getElementById("image_upload").addEventListener("change", () => {
     const node = document.getElementById("image_upload");
     if (node.files[0] !== undefined) {
         document.getElementById("image_icon").style.backgroundColor = "#c38d9d";
+        document.getElementById("image_upload").value = "";
     }
 });
 

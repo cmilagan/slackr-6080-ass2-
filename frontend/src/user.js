@@ -92,6 +92,7 @@ const updateDetailsRequest = (email, password, bio, name, image) => {
             document.getElementById("users_bio").value = bio;
             document.getElementById("users_name").value = name;
             document.getElementById("new_password").value = "";
+            document.getElementById("users_password").value = password;
             if (image !== "") {
                 document.getElementById("personal_profile_image").src = image;
             } else {
