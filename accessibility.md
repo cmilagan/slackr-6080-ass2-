@@ -1,0 +1,1 @@
+In mobile mode, channel list can be toggled by pressing the Slackr. branding on the navbar

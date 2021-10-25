@@ -34,7 +34,7 @@ export function login() {
                 localStorage.setItem('token', data['token']);
                 localStorage.setItem('password', password);
                 localStorage.setItem('email', email);
-
+                window.location.hash = "";
                 loggedIn();
             })
         } else {
@@ -78,6 +78,7 @@ export function register() {
                 localStorage.setItem('token', data['token']);
                 localStorage.setItem('password', password);
                 localStorage.setItem('email', email);
+
                 loggedIn();
             })           
         } else {
@@ -126,6 +127,7 @@ export function signout() {
 export function notLoggedIn() {
     unload();
     document.getElementById("login_page").style.display ="flex";
+    window.location.hash = "login";
 }
 /**
  * If the user is logged in, display the main application page
@@ -134,5 +136,6 @@ export function loggedIn() {
     unload();
     document.getElementById("navbar").style.display = "flex";
     document.getElementById("application_page").style.display = "grid";
+    window.location.hash = "";
     getChannels();
 }

@@ -3,7 +3,6 @@ import {
     errorPopUp,
     unload,
     calculateTimeDate,
-    compare,
 } from './helpers.js';
 
 /**
@@ -95,6 +94,8 @@ const updateDetailsRequest = (email, password, bio, name, image) => {
             document.getElementById("new_password").value = "";
             if (image !== "") {
                 document.getElementById("personal_profile_image").src = image;
+            } else {
+                document.getElementById("personal_profile_image").src = "../assets/default_profile.jpeg";
             }
             if (email !== localStorage.getItem('email')) {
                 document.getElementById("users_email").value = email;
@@ -139,17 +140,17 @@ export const getLoggedInUserDetails = () => {
     getAllUsers(user_list);
     Promise.all(user_list).then(response => {
         const logged_in_user_details = [];
-        console.log(response[0]["users"], localStorage.getItem('email'));
         let result = response[0]["users"].filter(user => {
             return user.email === localStorage.getItem('email');
         })
-        console.log(result);
         getUserDetails(result[0].id, logged_in_user_details)
 
         return Promise.all(logged_in_user_details);
     }).then(data => {
-        if (data[0].image !== "") {
+        if (data[0].image !== null && data[0].image !== "") {
             document.getElementById("personal_profile_image").src = data[0].image;
+        } else {
+            document.getElementById("personal_profile_image").src = "../assets/default_profile.jpeg";
         }
         document.getElementById("personal_profile_header").innerText = `${data[0].name}'s profile :D`;
         document.getElementById("users_password").value = localStorage.getItem('password');
@@ -165,10 +166,8 @@ export const getLoggedInUserDetails = () => {
  * @param {*} user_id 
  */
 const inviteUser = (user_id) => {
-    console.log(user_id);
     const token = localStorage.getItem('token');
     const channel_id = document.getElementById("display_id").value;
-    console.log(channel_id);
     const url = `http://localhost:5005/channel/${channel_id}/invite`;
 
     const jsonString = JSON.stringify({

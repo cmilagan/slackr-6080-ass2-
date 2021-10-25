@@ -89,12 +89,13 @@ const displayNewMessage = (id) => {
             document.getElementById("profile_user_bio").innerText = "bio: " + msg_senders[0].bio;
             document.getElementById("profile_user_email").innerText = "email: " + msg_senders[0].email;
             document.getElementById("view_user_profile").style.display = "block";
+            window.location.hash = `profile=\{${message_list[0].sender}\}`;
+
 
         });
 
         if (document.getElementById(`message_image_${message_list[0].id}`) !== null) {
             document.getElementById(`message_image_${message_list[0].id}`).addEventListener('click', () => {
-                console.log("hello");
                 document.getElementById("view_channel_images").style.display = "block";
                 document.getElementById(`full_image_container_${message_list[0].id}`).scrollIntoView();
             
@@ -733,6 +734,7 @@ export const displayChannelMessages = (id, flag) => {
         path : {
             'channelId': id,
         },
+
     };
 
     const message_list = [];
@@ -753,13 +755,13 @@ export const displayChannelMessages = (id, flag) => {
     }).then(messages => {
         messages.map((i) => {
             getMessageSenders(message_list, promise_list, i);
-            
         });
         // resolve all users data before continuing
         return Promise.all(promise_list);
     }).then(msg_senders => {
         if (msg_senders.length !== message_list.length) {
             errorPopUp("Error loading messages");
+            return;
         }
         for (let i = 0; i < msg_senders.length; i++) {
             const block = constructMessage(message_list[i], msg_senders[i]);
@@ -782,13 +784,13 @@ export const displayChannelMessages = (id, flag) => {
                 document.getElementById("profile_user_bio").innerText = "BIO: " + bio;
                 document.getElementById("profile_user_email").innerText = "EMAIL: " + msg_senders[i].email;
                 document.getElementById("view_user_profile").style.display = "block";
+                window.location.hash = `profile=\{${message_list[i].sender}\}`;
     
             });
 
             // event handler for clicking on an image and displaying full view
             if (document.getElementById(`message_image_${message_list[i].id}`) !== null) {
                 document.getElementById(`message_image_${message_list[i].id}`).addEventListener('click', () => {
-                    console.log("hello");
                     document.getElementById("view_channel_images").style.display = "block";
                     document.getElementById(`full_image_container_${message_list[i].id}`).scrollIntoView();
                 

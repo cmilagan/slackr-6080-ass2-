@@ -20,7 +20,6 @@ export function createNewChannel() {
     const channel_name = document.getElementById("new_channel_name").value;
     const channel_desc = document.getElementById("new_channel_desc").value;
     const private_channel = document.getElementById("make_private").checked; /* e.g value=unchecked */
-    console.log(private_channel);
 
     const token = localStorage.getItem('token');
 
@@ -41,7 +40,6 @@ export function createNewChannel() {
 
     fetch('http://localhost:5005/channel', requestOptions).then(response => {
         if (response.ok) {
-            console.log("new channel created");
             document.getElementById("new_channel").style.display = "none";
             getChannels();
         } else {
@@ -79,7 +77,6 @@ export const leaveChannel = (id) => {
             document.getElementById("leave_channel").style.display = "none";
             document.getElementById("invite_channel").style.display = "none";
             clearChildren(document.getElementById("channel_content"));
-            // displayChannelMessages(id);
         } else {
             response.json().then(data => {
                 errorPopUp(data["error"]);
@@ -145,7 +142,6 @@ const displayChannelDetails = (id) => {
             return response.json();
         } else {
             response.json().then(data => {
-                console.log(data["error"]);
                 errorPopUp(data["error"]);
             });
             document.getElementById("heading_display").innerText = "You are not a member of this channel";
@@ -155,6 +151,7 @@ const displayChannelDetails = (id) => {
             document.getElementById("leave_channel").style.display = "none";
             document.getElementById("invite_channel").style.display = "none";
             document.getElementById("display_id").value = id;
+            return;
 
 
         }
@@ -175,7 +172,9 @@ const displayChannelDetails = (id) => {
         return Promise.all(promise_list);
     }).then(creator => {
         document.getElementById("attribute_display").innerText = `Created by: ${creator[0]["name"]}, on ${date_time}`;
-    })
+    }).catch(err => {
+        errorPopUp(err);
+    });
 }
 
 
@@ -190,10 +189,7 @@ const editChannelDetails = (id) => {
     const edited_name = document.getElementById("edit_channel_name_" + id).value;
     const edited_desc = document.getElementById("edit_channel_desc_" + id).value;
     const token = localStorage.getItem('token');
-    console.log(token);
 
-    // console.log(edited_name);
-    // console.log(edited_desc);
 
     const jsonString = JSON.stringify({
         name: edited_name,
@@ -213,13 +209,10 @@ const editChannelDetails = (id) => {
     }
     fetch('http://localhost:5005/channel/' + id, requestOptions).then(response => {
         if (response.ok) {
-            console.log("Succesfully changed channel details");
             getChannels();
             displayChannelDetails(id);
         } else {
             response.json().then((data) => {
-                console.log("i got here");
-                console.log(data["error"]);
                 errorPopUp(data["error"]);
             });
         }
@@ -285,7 +278,6 @@ const createEditForm = (id) => {
     form.appendChild(form_container);
 
     document.getElementById("edit_channel_submit_" + id).addEventListener("click", () => {
-        console.log(id);
         editChannelDetails(id);
         document.getElementById("edit_channel").style.display = "none";
     })
@@ -296,7 +288,6 @@ const createEditForm = (id) => {
  */
 export function getChannels() {
     // hard reset channel list 
-    
     const channel_list = document.getElementById("channel_list");
     clearChildren(channel_list);
 
@@ -310,11 +301,19 @@ export function getChannels() {
         },
 
     };
-    console.log(token);
     fetch('http://localhost:5005/channel', requestOptions).then(response => {
         if (response.ok) {
             response.json().then((data) => {
-                data["channels"].map((i) => {
+                // search filter 
+                const search_term = document.getElementById("channel_search").value;
+                data["channels"].filter(channel => {
+                    if (search_term === "") {
+                        return channel;
+                    } else if (channel.name.toLowerCase().includes(search_term.toLowerCase())) {
+                        return channel;
+                    }
+                }).map((i) => {
+
                     // Dynammically load the channel list
                     const current = document.createElement("div");
                     current.setAttribute("id", "channel_" + i["id"]);
@@ -340,9 +339,27 @@ export function getChannels() {
                      */
                     document.getElementById("channel_" + i["id"]).addEventListener('click', () => {
                         // channel list navigation for mobile sized screens
-                        // note: hard refresh needed if changing from mobile to desktop displays in console
+                        // note: refresh needed if changing from mobile to desktop
                         if (window.screen.width <= 756) {
+                            const search_filter = document.getElementById("filter");
+                            const channel_list = document.getElementById("channel_list");
+                            const add_channel = document.getElementById("user_options");
                             
+
+                            const details = document.getElementById("channel_nav");
+                            const buttons = document.getElementById("channel_buttons");
+                            const container = document.getElementById("message_container");
+                            const msg_field = document.getElementById("message_field");
+
+                            document.getElementById("application_page").style.gridTemplateAreas = '"details" "content_container" "msg_field"';
+
+                            search_filter.style.display = "none";
+                            channel_list.style.display = "none";
+                            add_channel.style.display = "none";
+                            details.style.display = "flex";
+                            buttons.style.display = "flex";
+                            container.style.display = "block";
+                            msg_field.style.display = "flex";
                         }
 
                         console.log("displaying clicked channel " + i["id"]);
@@ -351,7 +368,8 @@ export function getChannels() {
                         clearChildren(document.getElementById("pinned_messages_container"));
                         const loading = document.getElementById('loading');
                         loading.style.display = "flex";
-                        console.log(i["id"]);
+                        window.location.hash = `channel=\{${i["id"]}\}`;
+                        clearChildren(document.getElementById("channel_content"));
                         setTimeout(function() { displayChannelMessages(i["id"], 0); } , 1000);
                     })
 

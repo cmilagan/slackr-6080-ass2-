@@ -16,13 +16,35 @@ import {
 } from './login.js';
 
 import {
-    createNewChannel, joinChannel, leaveChannel,
+    createNewChannel, getChannels, joinChannel, leaveChannel,
 } from './channel.js';
 
 import {
     displayChannelMessages, renderMessage,
 } from './messages.js';
 import { generateUserList, getLoggedInUserDetails, updateUserDetails } from './user.js';
+
+
+// fragment based url routing
+window.onhashchange = loadHashPage;
+function loadHashPage() {
+    let hash = location.hash;
+    console.log(hash);
+    if (hash === "#profile") {
+
+    } else if (/^#channel={/.test(hash)) {
+        const id = hash.substring(10, hash.length - 1);
+        const channel_id = parseInt(id);
+        console.log(channel_id);
+
+        
+    } else if (/^#profile={/.test(hash)) {
+        const id = hash.substring(10, hash.length - 1);
+        const channel_id = parseInt(id);
+        console.log(channel_id);
+    }
+}
+
 
 /**
  * Check that a user has been logged in.
@@ -68,6 +90,7 @@ document.getElementById('sign_up').addEventListener('click', () => {
     // display register
     unload();
     document.getElementById("register_page").style.display = "flex";
+    window.location.hash = "register";
 });
 
 /**
@@ -76,11 +99,12 @@ document.getElementById('sign_up').addEventListener('click', () => {
 document.getElementById('back').addEventListener('click', () => {
     // display login page 
     unload();
+    window.location.hash = "login";
     document.getElementById("login_page").style.display = "flex";
 });
 
 /**
- * User goes back to the login page from registration screen
+ * User registers upon clicking submit button
  */
 document.getElementById('submit').addEventListener('click', () => {
     register();
@@ -101,12 +125,14 @@ document.getElementById('confirm_password').addEventListener('keydown', (e) => {
  * Event handler for user signing out
  */
 document.getElementById('signout_button').addEventListener('click', () => {
+    window.location.hash = "login";
     signout();
 });
 
 // EVENT HANDLERS FOR CREATING CHANNELS
 
 document.getElementById('create_channel').addEventListener('click', ()=> {
+    window.location.hash = "create_channel";
     document.getElementById("new_channel").style.display = "block";
 });
 
@@ -122,20 +148,113 @@ document.getElementById('close_error').addEventListener('click', () => {
     document.getElementById("error_pop_up").style.display = "none";
 });
 
+/**
+ * closes create channel form
+ */
 document.getElementById('close_form').addEventListener('click', () => {
+    window.location.hash = `channel=\{${document.getElementById("display_id").value}\}`;
     document.getElementById("new_channel").style.display = "none";
 });
 
+/**
+ * closes edit channel form
+ */
 document.getElementById('close_edit_channel').addEventListener('click', () => {
+    window.location.hash = `channel=\{${document.getElementById("display_id").value}\}`;
     document.getElementById("edit_channel").style.display = "none";
 });
 
+
+/**
+ * closes edit message form
+ */
 document.getElementById('close_edit_message').addEventListener('click', () => {
+    window.location.hash = `channel=\{${document.getElementById("display_id").value}\}`;
     document.getElementById("edit_message").style.display = "none";
 });
 
+/**
+ * closes react message popup
+ */
 document.getElementById('close_react_message').addEventListener('click', () => {
+    window.location.hash = `channel=\{${document.getElementById("display_id").value}\}`;
     document.getElementById("react_message").style.display = "none";
+});
+
+
+// Showcase pinned messages modal
+document.getElementById('toggle_pinned_messages').addEventListener('click', () => {
+    window.location.hash = `pinned_messages_channel=\{${document.getElementById("display_id").value}\}`;
+    document.getElementById("pinned_messages").style.display = "block";
+});
+
+// close pinned messages modal
+document.getElementById('close_pinned_messages').addEventListener('click', () => {
+    window.location.hash = `channel=\{${document.getElementById("display_id").value}\}`;
+    document.getElementById("pinned_messages").style.display = "none";
+});
+
+// open invite users modal
+document.getElementById('invite_channel').addEventListener('click', () => {
+    window.location.hash = `invite_channel=\{${document.getElementById("display_id").value}\}`;
+    generateUserList();
+    clearChildren(document.getElementById('user_list'));
+    document.getElementById('invite_to_channel').style.display = "block";
+    
+});
+
+// close invite channel modal
+document.getElementById('close_invite_channel').addEventListener('click', () => {
+    window.location.hash = `channel=\{${document.getElementById("display_id").value}\}`;
+    document.getElementById('invite_to_channel').style.display = "none";
+});
+
+document.getElementById('join_channel').addEventListener('click', () => {
+    joinChannel(document.getElementById("display_id").value);
+});
+
+document.getElementById('leave_channel').addEventListener('click', () => {
+    leaveChannel(document.getElementById("display_id").value);
+});
+
+// closes currently viewed profile
+document.getElementById("close_user_profile").addEventListener('click', () => {
+    window.location.hash = `channel=\{${document.getElementById("display_id").value}\}`;
+    document.getElementById('view_user_profile').style.display = "none";
+});
+
+document.getElementById("profile_button").addEventListener('click', () => {
+    window.location.hash = `profile`;
+    document.getElementById("view_personal_profile").style.display = "block";
+    getLoggedInUserDetails();
+});
+
+document.getElementById("close_personal_profile").addEventListener('click', () => {
+    window.location.hash = `channel=\{${document.getElementById("display_id").value}\}`;
+    document.getElementById("view_personal_profile").style.display = "none";
+});
+
+document.getElementById("close_channel_images").addEventListener('click', () => {
+    window.location.hash = `channel=\{${document.getElementById("display_id").value}\}`;
+    document.getElementById("view_channel_images").style.display = "none";
+});
+
+document.getElementById("submit_profile_changes").addEventListener('click', () => {
+    window.location.hash = `channel=\{${document.getElementById("display_id").value}\}`;
+    updateUserDetails();
+});
+
+/**
+ * Buttons to navigate through full screen images;
+ */
+document.getElementById("left_button").addEventListener('click', () => {
+    const view_width = document.getElementById("image_container").offsetWidth;
+    document.getElementById("image_container").scrollBy(- view_width, 0);
+});
+
+document.getElementById("right_button").addEventListener('click', () => {
+    const view_width = document.getElementById("image_container").offsetWidth;
+    document.getElementById("image_container").scrollBy(view_width, 0);
 });
 
 
@@ -203,48 +322,6 @@ document.getElementById("msg_input").addEventListener('keydown', (e) => {
     }
 });
 
-// Showcase pinned messages modal
-document.getElementById('toggle_pinned_messages').addEventListener('click', () => {
-    document.getElementById("pinned_messages").style.display = "block";
-});
-
-// close pinned messages modal
-document.getElementById('close_pinned_messages').addEventListener('click', () => {
-    document.getElementById("pinned_messages").style.display = "none";
-});
-
-// open invite users modal
-document.getElementById('invite_channel').addEventListener('click', () => {
-    generateUserList();
-    clearChildren(document.getElementById('user_list'));
-    document.getElementById('invite_to_channel').style.display = "block";
-    
-});
-
-document.getElementById('close_invite_channel').addEventListener('click', () => {
-    document.getElementById('invite_to_channel').style.display = "none";
-});
-
-document.getElementById('join_channel').addEventListener('click', () => {
-    joinChannel(document.getElementById("display_id").value);
-});
-
-document.getElementById('leave_channel').addEventListener('click', () => {
-    leaveChannel(document.getElementById("display_id").value);
-});
-
-document.getElementById("close_user_profile").addEventListener('click', () => {
-    document.getElementById('view_user_profile').style.display = "none";
-});
-
-document.getElementById("profile_button").addEventListener('click', () => {
-    document.getElementById("view_personal_profile").style.display = "block";
-    getLoggedInUserDetails();
-});
-
-document.getElementById("close_personal_profile").addEventListener('click', () => {
-    document.getElementById("view_personal_profile").style.display = "none";
-});
 
 // toggle password visibility on and off on user profile
 document.getElementById("visibility_switch").addEventListener('click', () => {
@@ -255,9 +332,6 @@ document.getElementById("visibility_switch").addEventListener('click', () => {
     }
 });
 
-document.getElementById("submit_profile_changes").addEventListener('click', () => {
-    updateUserDetails();
-});
 
 /**
  * Visual indicator that a file has been chosen and can be sent
@@ -266,25 +340,12 @@ document.getElementById("image_upload").addEventListener("change", () => {
     const node = document.getElementById("image_upload");
     if (node.files[0] !== undefined) {
         document.getElementById("image_icon").style.backgroundColor = "#c38d9d";
-
     }
 });
 
-document.getElementById("close_channel_images").addEventListener('click', () => {
-    document.getElementById("view_channel_images").style.display = "none";
-});
-
-/**
- * Buttons to navigate through full screen images;
- */
-document.getElementById("left_button").addEventListener('click', () => {
-    const view_width = document.getElementById("image_container").offsetWidth;
-    document.getElementById("image_container").scrollBy(- view_width, 0);
-});
-
-document.getElementById("right_button").addEventListener('click', () => {
-    const view_width = document.getElementById("image_container").offsetWidth;
-    document.getElementById("image_container").scrollBy(view_width, 0);
+// event handler for search filter
+document.getElementById("channel_search").addEventListener('keydown', () => {
+    getChannels();
 });
 
 checkUserLogin();
